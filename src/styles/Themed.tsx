@@ -1,11 +1,12 @@
 import { Theme, ThemeProvider } from 'react-native-elements';
 import React, { FC, ReactChild } from 'react';
+import { colors } from './Colors';
 
 const theme: Theme = {
   Button: {
     raised: true,
     buttonStyle: {
-      backgroundColor: '#f00'
+      backgroundColor: colors.primary
     },
     titleStyle: {
       fontSize: 14
@@ -13,7 +14,17 @@ const theme: Theme = {
   },
   Text: {
     style: {
-      color: '#fff'
+      color: colors.secondary
+    },
+    h4Style: {
+      color: colors.default,
+      fontSize: 20,
+      fontWeight: 'bold'
+    }
+  },
+  Header: {
+    containerStyle: {
+      backgroundColor: colors.secondary
     }
   }
 };

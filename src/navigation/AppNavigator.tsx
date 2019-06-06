@@ -5,6 +5,7 @@ import ShowsScreen from '@screens/Shows/ShowsScreen';
 import PersonalScreen from '@screens/Personal/PersonalScreen';
 import SettingsScreen from '@screens/Settings/SettingsScreen';
 import { Icon } from 'react-native-elements';
+import { colors } from '@styles/Colors';
 
 const moviesStack = createStackNavigator(
   {
@@ -16,7 +17,7 @@ const moviesStack = createStackNavigator(
     initialRouteName: 'Movies',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#000'
+      backgroundColor: colors.default
     }
   }
 );
@@ -31,7 +32,7 @@ const showsStack = createStackNavigator(
     initialRouteName: 'Shows',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#000'
+      backgroundColor: colors.default
     }
   }
 );
@@ -46,7 +47,7 @@ const personalStack = createStackNavigator(
     initialRouteName: 'Personal',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#000'
+      backgroundColor: colors.default
     }
   }
 );
@@ -61,7 +62,7 @@ const settingsStack = createStackNavigator(
     initialRouteName: 'Settings',
     headerMode: 'none',
     cardStyle: {
-      backgroundColor: '#000'
+      backgroundColor: colors.default
     }
   }
 );
@@ -102,8 +103,8 @@ const mainTabNavigator = createBottomTabNavigator(
   {
     initialRouteName: 'MoviesStack',
     tabBarOptions: {
-      activeTintColor: '#f00',
-      inactiveTintColor: '#444',
+      activeTintColor: colors.primary,
+      inactiveTintColor: colors.dark,
       showLabel: false
     }
   }

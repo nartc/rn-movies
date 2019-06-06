@@ -1,10 +1,13 @@
+import { configurationEpics } from '@store/Configurations/configurationEpics';
+import { configurationReducer } from '@store/Configurations/configurationReducer';
+import { moviesEpics } from '@store/Movies/moviesEpics';
+import { moviesReducer } from '@store/Movies/moviesReducer';
 import { combineReducers } from 'redux';
-import { moviesReducer } from './Movies/moviesReducer';
 import { combineEpics } from 'redux-observable';
-import { moviesEpics } from './Movies/moviesEpics';
 
 export const rootReducer = combineReducers({
-  moviesState: moviesReducer
+  moviesState: moviesReducer,
+  configurationState: configurationReducer
 });
 
-export const rootEpic = combineEpics(...moviesEpics);
+export const rootEpic = combineEpics(...moviesEpics, ...configurationEpics);

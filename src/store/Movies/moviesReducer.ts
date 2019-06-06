@@ -1,7 +1,7 @@
+import { moviesActions } from '@store/Movies/moviesActions';
 import { ActionType } from 'typesafe-actions';
 import { Movie, MovieDetail } from '@api/Models';
 import { Reducer } from 'redux';
-import { moviesActions } from './moviesActions';
 
 export type MoviesActions = ActionType<typeof moviesActions>;
 export type MoviesState = {

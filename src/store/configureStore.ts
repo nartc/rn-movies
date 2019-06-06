@@ -1,6 +1,6 @@
+import { rootEpic, rootReducer } from '@store/root';
 import { Middleware, StoreEnhancer, applyMiddleware, createStore, compose } from 'redux';
 import logger from 'redux-logger';
-import { rootReducer, rootEpic } from './root';
 import { createEpicMiddleware } from 'redux-observable';
 
 export type AppState = ReturnType<typeof rootReducer>;
