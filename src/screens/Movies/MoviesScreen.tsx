@@ -1,4 +1,3 @@
-import { configurationActions } from '@store/Configurations/configurationActions';
 import { StackScreenProps } from '@utils/types';
 import { AppState } from '@store/configureStore';
 import { moviesActions } from '@store/Movies/moviesActions';
@@ -15,7 +14,6 @@ const mapStateToProps = (state: AppState) => ({
 
 const mapDispatchToProps = {
   fetchMovies: moviesActions.fetchMovies,
-  fetchConfiguration: configurationActions.fetchConfiguration
 };
 
 export type MoviesScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & StackScreenProps;

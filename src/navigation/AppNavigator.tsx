@@ -1,5 +1,11 @@
+import LandingScreen from '@screens/Landing/LandingScreen';
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator,
+  createAppContainer,
+  createSwitchNavigator
+} from 'react-navigation';
 import MoviesScreen from '@screens/Movies/MoviesScreen';
 import ShowsScreen from '@screens/Shows/ShowsScreen';
 import PersonalScreen from '@screens/Personal/PersonalScreen';
@@ -72,14 +78,14 @@ const mainTabNavigator = createBottomTabNavigator(
     MoviesStack: {
       screen: moviesStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={'material-community'} color={tintColor} />
+        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={ 'material-community' } color={ tintColor }/>
       }
     },
     ShowsStack: {
       screen: showsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="television-classic" type={'material-community'} color={tintColor} />
+          <Icon name="television-classic" type={ 'material-community' } color={ tintColor }/>
         )
       }
     },
@@ -87,7 +93,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: personalStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="account-outline" type={'material-community'} color={tintColor} />
+          <Icon name="account-outline" type={ 'material-community' } color={ tintColor }/>
         )
       }
     },
@@ -95,7 +101,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: settingsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="settings-outline" type={'material-community'} color={tintColor} />
+          <Icon name="settings-outline" type={ 'material-community' } color={ tintColor }/>
         )
       }
     }
@@ -110,4 +116,24 @@ const mainTabNavigator = createBottomTabNavigator(
   }
 );
 
-export default createAppContainer(mainTabNavigator);
+const landingStack = createStackNavigator({
+  Landing: {
+    screen: LandingScreen
+  }
+}, {
+  initialRouteName: 'Landing',
+  mode: 'modal'
+});
+
+const mainNavigator = createSwitchNavigator({
+  LandingStack: {
+    screen: landingStack
+  },
+  App: {
+    screen: mainTabNavigator
+  }
+}, {
+  initialRouteName: 'LandingStack',
+});
+
+export default createAppContainer(mainNavigator);

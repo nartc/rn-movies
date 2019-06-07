@@ -2,7 +2,6 @@ export type MovieEndpointsPath = 'now_playing' | 'popular' | 'top_rated' | 'upco
 export type ShowEndpointsPath =
   | Exclude<MovieEndpointsPath, 'now_playing' | 'upcoming'>
   | 'on_the_air'
-  | 'latest'
   | 'airing_today';
 
 export enum MovieVideoType {

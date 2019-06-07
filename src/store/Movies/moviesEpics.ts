@@ -15,7 +15,6 @@ const fetchMoviesEpic = (action$: ActionsObservable<MoviesActions>, state$: Stat
     filter(isOfType(FETCH_MOVIES)),
     withLatestFrom(state$),
     switchMap(([, state]) => {
-      console.log({ state });
       const moviesFetch = Promise.all([
         getMovies('now_playing'),
         getMovies('popular'),

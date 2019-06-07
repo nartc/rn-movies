@@ -12,7 +12,8 @@ module.exports = {
           '@store': './src/store',
           '@styles': './src/styles',
           '@utils': './src/utils',
-          '@ui': './src/shared/ui'
+          '@ui': './src/shared/ui',
+          '@hooks': './src/shared/hooks'
         }
       }
     ]

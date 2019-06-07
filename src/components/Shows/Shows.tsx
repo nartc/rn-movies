@@ -1,32 +1,31 @@
-import MovieCarouselItem from '@components/Movies/MovieCarouselItem';
+import { TvShow } from '@api/Models';
+import ShowCarouselItem from '@components/Shows/ShowCarouselItem';
+import { ShowsScreenProps } from '@screens/Shows/ShowsScreen';
+import { colors } from '@styles/Colors';
+import { dimensions } from '@styles/Dimensions';
 import CenterView from '@ui/CenterView';
 import React, { FC } from 'react';
-import { MoviesScreenProps } from '@screens/Movies/MoviesScreen';
-import Spinner from 'react-native-spinkit';
-import { colors } from '@styles/Colors';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import { Movie } from '@api/Models';
-import { dimensions } from '@styles/Dimensions';
+import Spinner from 'react-native-spinkit';
 import { useCarouselItem } from '@hooks/useCarouselItem';
 import { useFetch } from '@hooks/useFetch';
 
-const Movies: FC<MoviesScreenProps> = ({ fetchMovies, nowPlayings, isLoading }) => {
-  const carouselItems = useCarouselItem<Movie>(nowPlayings, isLoading);
-
-  useFetch(fetchMovies);
+const Shows: FC<ShowsScreenProps> = ({ isLoading, populars, fetchShows }) => {
+  const carouselItems = useCarouselItem<TvShow>(populars, isLoading);
+  useFetch(fetchShows);
 
   const onItemTouched = (id: number) => {
     console.log({ id });
   };
 
-  const renderCarouselItem = (item: { item: Movie; index: number }) => {
-    return <MovieCarouselItem movie={ item.item } onMovieTouched={ onItemTouched }/>;
+  const renderCarouselItem = (item: { item: TvShow, index: number }) => {
+    return <ShowCarouselItem tvShow={ item.item } onTvShowTouched={ onItemTouched }/>;
   };
 
   return (
     <SafeAreaView style={ styles.flexed }>
-      { isLoading || !nowPlayings.length ? (
+      { isLoading || !populars.length ? (
         <CenterView>
           <Spinner isVisible={ isLoading } color={ colors.primary } type={ 'Bounce' }/>
         </CenterView>
@@ -49,4 +48,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Movies;
+export default Shows;
