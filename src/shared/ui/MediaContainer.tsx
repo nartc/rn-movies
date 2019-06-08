@@ -20,7 +20,7 @@ type MediaContainerProps = {
 };
 const MediaContainer: FC<MediaContainerProps> = memo(
   ({ mediaType, carouselItemsSource, isLoading, fetchItemsCb, onItemSelected, children }) => {
-    const carouselItems = useCarouselItem<Movie | TvShow>(carouselItemsSource as Movie[] | TvShow[], isLoading);
+    const carouselItems = useCarouselItem<Movie | TvShow>(carouselItemsSource, isLoading);
     useFetch(fetchItemsCb);
 
     const SafeView = Platform.OS === 'ios' ? SafeAreaView : View;
