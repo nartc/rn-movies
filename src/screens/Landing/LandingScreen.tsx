@@ -1,12 +1,12 @@
 import Landing from '@components/Landing/Landing';
 import { configurationActions } from '@store/Configurations/configurationActions';
 import { AppState } from '@store/configureStore';
-import React from 'react';
 import { StackScreenProps } from '@utils/types';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: AppState) => ({
-  hasConfiguration: !!state.configurationState.configuration && !!state.configurationState.configuration.images.secure_base_url,
+  hasConfiguration:
+    !!state.configurationState.configuration && !!state.configurationState.configuration.images.secure_base_url
 });
 
 const mapDispatchToProps = {
@@ -15,4 +15,7 @@ const mapDispatchToProps = {
 
 export type LandingScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & StackScreenProps;
 
-export default connect(mapStateToProps, mapDispatchToProps)(Landing);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Landing);

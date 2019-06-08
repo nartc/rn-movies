@@ -78,14 +78,14 @@ const mainTabNavigator = createBottomTabNavigator(
     MoviesStack: {
       screen: moviesStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={ 'material-community' } color={ tintColor }/>
+        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={'material-community'} color={tintColor} />
       }
     },
     ShowsStack: {
       screen: showsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="television-classic" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="television-classic" type={'material-community'} color={tintColor} />
         )
       }
     },
@@ -93,7 +93,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: personalStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="account-outline" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="account-outline" type={'material-community'} color={tintColor} />
         )
       }
     },
@@ -101,7 +101,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: settingsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="settings-outline" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="settings-outline" type={'material-community'} color={tintColor} />
         )
       }
     }
@@ -116,24 +116,30 @@ const mainTabNavigator = createBottomTabNavigator(
   }
 );
 
-const landingStack = createStackNavigator({
-  Landing: {
-    screen: LandingScreen
-  }
-}, {
-  initialRouteName: 'Landing',
-  mode: 'modal'
-});
-
-const mainNavigator = createSwitchNavigator({
-  LandingStack: {
-    screen: landingStack
+const landingStack = createStackNavigator(
+  {
+    Landing: {
+      screen: LandingScreen
+    }
   },
-  App: {
-    screen: mainTabNavigator
+  {
+    initialRouteName: 'Landing',
+    mode: 'modal'
   }
-}, {
-  initialRouteName: 'LandingStack',
-});
+);
+
+const mainNavigator = createSwitchNavigator(
+  {
+    LandingStack: {
+      screen: landingStack
+    },
+    App: {
+      screen: mainTabNavigator
+    }
+  },
+  {
+    initialRouteName: 'LandingStack'
+  }
+);
 
 export default createAppContainer(mainNavigator);

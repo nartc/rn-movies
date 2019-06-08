@@ -21,6 +21,7 @@
       "@store/*": ["src/store/*"],
       "@ui/*": ["src/shared/ui/*"],
       "@hooks/*": ["src/shared/hooks/*"],
+      "@platforms/*": ["src/shared/platforms/*"],
       "@utils/*": ["src/utils/*"]
     }
   },

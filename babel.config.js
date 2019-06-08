@@ -13,7 +13,8 @@ module.exports = {
           '@styles': './src/styles',
           '@utils': './src/utils',
           '@ui': './src/shared/ui',
-          '@hooks': './src/shared/hooks'
+          '@hooks': './src/shared/hooks',
+          '@platforms': './src/shared/platforms'
         }
       }
     ]

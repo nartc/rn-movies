@@ -4,7 +4,6 @@ import React, { FC, useEffect } from 'react';
 import Spinner from 'react-native-spinkit';
 
 const Landing: FC<LandingScreenProps> = ({ hasConfiguration, fetchConfiguration, navigation }) => {
-
   useEffect(() => {
     if (!hasConfiguration) {
       fetchConfiguration();
@@ -15,7 +14,7 @@ const Landing: FC<LandingScreenProps> = ({ hasConfiguration, fetchConfiguration,
 
   return (
     <CenterView>
-      <Spinner isVisible={ true }/>
+      <Spinner isVisible={true} />
     </CenterView>
   );
 };
