@@ -9,31 +9,45 @@ export type ConfigurationState = {
   configuration: Configuration | null;
   backdropPath: string;
   posterPath: string;
+  movieGenres: {
+    [id: number]: string
+  },
+  tvGenres: {
+    [id: number]: string
+  }
 };
 
 const initialState = {
   isLoading: false,
   configuration: null,
   backdropPath: '',
-  posterPath: ''
+  posterPath: '',
+  movieGenres: {},
+  tvGenres: {}
 } as ConfigurationState;
 
 export const configurationReducer: Reducer<ConfigurationState, ConfigurationActions> = (state = initialState, action) => {
   switch (action.type) {
+    case 'FETCH_GENRES_SUCCESS': {
+      return { ...state, movieGenres: action.payload.movieGenres, tvGenres: action.payload.tvGenres };
+    }
     case 'FETCH_CONFIGURATION_SUCCESS': {
       const { configuration } = action.payload;
       const backdropPath = `${ configuration.images.secure_base_url }${ configuration.images.backdrop_sizes.find(s => s === 'original') }`;
       const posterPath = `${ configuration.images.secure_base_url }${ configuration.images.poster_sizes.find(s => s === 'original') }`;
       return {
+        ...state,
         configuration,
         backdropPath,
         posterPath,
         isLoading: false
       };
     }
+    case 'FETCH_GENRES_FAILED':
     case 'FETCH_CONFIGURATION_FAILED': {
       return { ...state, isLoading: false };
     }
+    case 'FETCH_GENRES':
     case 'FETCH_CONFIGURATION': {
       return { ...state, isLoading: true };
     }

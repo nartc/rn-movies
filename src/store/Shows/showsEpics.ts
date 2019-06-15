@@ -31,6 +31,7 @@ const mapConfigurationToShow = (configuration: ConfigurationState) => (shows: Tv
   for (let i = 0, len = shows.length; i < len; i++) {
     for (let j = 0, innerLen = shows[i].length; j < innerLen; j++) {
       const show = shows[i][j];
+      show.genre_names = show.genre_ids.map(id => configuration.tvGenres[id]);
       show.backdrop_path = `${ configuration.backdropPath }${ show.backdrop_path }`;
       show.poster_path = `${ configuration.posterPath }${ show.poster_path }`;
     }

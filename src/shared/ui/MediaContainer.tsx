@@ -1,5 +1,6 @@
 import React, { FC, memo } from 'react';
 import { Platform, SafeAreaView, View, ScrollView, StyleSheet } from 'react-native';
+import { Text } from 'react-native-elements';
 import { Action } from 'typesafe-actions';
 import { Movie, TvShow } from '@api/Models';
 import { useCarouselItem } from '@hooks/useCarouselItem';
@@ -29,39 +30,40 @@ const MediaContainer: FC<MediaContainerProps> = memo(
       const carouselItemProps =
         mediaType === 'movie'
           ? {
-              title: (item.item as Movie).title,
-              releaseDate: (item.item as Movie).release_date
-            }
-          : { name: (item.item as TvShow).name, voteCount: item.item.vote_count };
+            title: (item.item as Movie).title,
+            releaseDate: (item.item as Movie).release_date
+          }
+          : { name: (item.item as TvShow).name, genres: (item.item.genre_names as string[]).join(', ') };
 
       return (
         <CarouselItem
-          id={item.item.id}
-          onItemTouched={onItemSelected}
-          backdropPath={item.item.backdrop_path}
-          {...carouselItemProps}
+          id={ item.item.id }
+          onItemTouched={ onItemSelected }
+          backdropPath={ item.item.backdrop_path }
+          { ...carouselItemProps }
         />
       );
     };
 
     return (
-      <SafeView style={styles.flexed}>
-        {isLoading || !carouselItemsSource.length ? (
+      <SafeView style={ styles.flexed }>
+        { isLoading || !carouselItemsSource.length ? (
           <CenterView>
-            <Spinner isVisible={isLoading} color={colors.primary} type={'Bounce'} />
+            <Spinner isVisible={ isLoading } color={ colors.primary } type={ 'Bounce' }/>
+            <Text style={ { fontSize: 12 } }>Loading...</Text>
           </CenterView>
         ) : (
-          <ScrollView style={styles.flexed}>
+          <ScrollView style={ styles.flexed }>
             <Carousel
-              data={carouselItems}
-              renderItem={renderCarouselItem}
-              sliderWidth={dimensions.width}
-              itemWidth={dimensions.width - 50}
+              data={ carouselItems }
+              renderItem={ renderCarouselItem }
+              sliderWidth={ dimensions.width }
+              itemWidth={ dimensions.width - 50 }
               horizontal
             />
-            {children}
+            { children }
           </ScrollView>
-        )}
+        ) }
       </SafeView>
     );
   }

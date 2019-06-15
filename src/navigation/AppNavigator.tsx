@@ -1,4 +1,6 @@
 import LandingScreen from '@screens/Landing/LandingScreen';
+import MovieDetailModalScreen from '@screens/Movies/MovieDetailModalScreen';
+import FilterMoviesScreen from '@screens/Movies/FilterMoviesScreen';
 import React from 'react';
 import {
   createStackNavigator,
@@ -17,6 +19,9 @@ const moviesStack = createStackNavigator(
   {
     Movies: {
       screen: MoviesScreen
+    },
+    FilterMovies: {
+      screen: FilterMoviesScreen
     }
   },
   {
@@ -78,14 +83,14 @@ const mainTabNavigator = createBottomTabNavigator(
     MoviesStack: {
       screen: moviesStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={'material-community'} color={tintColor} />
+        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={ 'material-community' } color={ tintColor }/>
       }
     },
     ShowsStack: {
       screen: showsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="television-classic" type={'material-community'} color={tintColor} />
+          <Icon name="television-classic" type={ 'material-community' } color={ tintColor }/>
         )
       }
     },
@@ -93,7 +98,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: personalStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="account-outline" type={'material-community'} color={tintColor} />
+          <Icon name="account-outline" type={ 'material-community' } color={ tintColor }/>
         )
       }
     },
@@ -101,7 +106,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: settingsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="settings-outline" type={'material-community'} color={tintColor} />
+          <Icon name="settings-outline" type={ 'material-community' } color={ tintColor }/>
         )
       }
     }
@@ -128,17 +133,29 @@ const landingStack = createStackNavigator(
   }
 );
 
+const appStack = createStackNavigator({
+  MainTab: mainTabNavigator,
+  MovieDetails: MovieDetailModalScreen
+}, {
+  mode: 'modal',
+  initialRouteName: 'MainTab',
+  headerMode: 'none',
+  cardStyle: {
+    backgroundColor: colors.default
+  }
+});
+
 const mainNavigator = createSwitchNavigator(
   {
     LandingStack: {
       screen: landingStack
     },
-    App: {
-      screen: mainTabNavigator
+    MainTab: {
+      screen: appStack
     }
   },
   {
-    initialRouteName: 'LandingStack'
+    initialRouteName: 'LandingStack',
   }
 );
 

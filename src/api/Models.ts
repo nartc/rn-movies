@@ -104,6 +104,7 @@ export interface Movie {
   adult: false;
   backdrop_path: string;
   genre_ids: number[];
+  genre_names?: string[];
   id: number;
   original_language: string;
   original_title: string;
@@ -138,6 +139,7 @@ export interface MovieDetail extends Movie {
 export interface TvShow {
   original_name: string;
   genre_ids: number[];
+  genre_names?: string[];
   name: string;
   popularity: number;
   origin_country: string[];

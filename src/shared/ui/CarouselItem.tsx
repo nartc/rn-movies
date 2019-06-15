@@ -10,40 +10,40 @@ type CarouselItemProps = {
   title?: string;
   releaseDate?: string;
   name?: string;
-  voteCount?: number;
+  genres?: string;
   id: number;
   onItemTouched: (id: number) => void;
 };
 const CarouselItem: FC<CarouselItemProps> = memo(
-  ({ backdropPath, title, releaseDate, name, voteCount, onItemTouched, id }) => {
+  ({ backdropPath, title, releaseDate, name, genres, onItemTouched, id }) => {
     const firstText = title || name;
-    const secondText = releaseDate ? `Release on: ${releaseDate}` : `Votes: ${voteCount}`;
+    const secondText = releaseDate ? `Release on: ${ releaseDate }` : `${ genres }`;
 
     return (
-      <TouchableWithoutFeedback onPress={() => onItemTouched(id)}>
-        <View style={styles.carouselItemWrapper}>
-          <View style={styles.carouselItem}>
+      <TouchableWithoutFeedback onPress={ () => onItemTouched(id) }>
+        <View style={ styles.carouselItemWrapper }>
+          <View style={ styles.carouselItem }>
             <Image
-              source={{ uri: backdropPath }}
-              containerStyle={styles.flexed}
-              style={styles.carouselItemImage}
-              placeholderStyle={{ backgroundColor: colors.default }}
+              source={ { uri: backdropPath } }
+              containerStyle={ styles.flexed }
+              style={ styles.carouselItemImage }
+              placeholderStyle={ { backgroundColor: colors.default } }
               PlaceholderContent={
                 <Spinner
-                  isVisible={true}
-                  type={Platform.OS === 'ios' ? 'Wave' : '9CubeGrid'}
-                  size={20}
-                  color={colors.primary}
+                  isVisible={ true }
+                  type={ Platform.OS === 'ios' ? 'Wave' : '9CubeGrid' }
+                  size={ 20 }
+                  color={ colors.primary }
                 />
               }
             />
           </View>
-          <View style={styles.carouselBottomTextContainer}>
-            <View style={styles.carouselItemText}>
-              <Text style={styles.carouselItemTitle}>{firstText}</Text>
+          <View style={ styles.carouselBottomTextContainer }>
+            <View style={ styles.carouselItemText }>
+              <Text style={ styles.carouselItemTitle }>{ firstText }</Text>
             </View>
-            <View style={styles.carouselItemText}>
-              <Text style={styles.carouselItemReleaseDate}>{secondText}</Text>
+            <View style={ styles.carouselItemText }>
+              <Text style={ styles.carouselItemReleaseDate }>{ secondText }</Text>
             </View>
           </View>
         </View>

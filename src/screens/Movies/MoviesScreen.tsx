@@ -1,4 +1,3 @@
-import { StackScreenProps } from '@utils/types';
 import { AppState } from '@store/configureStore';
 import { moviesActions } from '@store/Movies/moviesActions';
 import { connect } from 'react-redux';
@@ -16,7 +15,7 @@ const mapDispatchToProps = {
   fetchMovies: moviesActions.fetchMovies,
 };
 
-export type MoviesScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps & StackScreenProps;
+export type MoviesScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
