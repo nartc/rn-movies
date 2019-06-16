@@ -1,18 +1,18 @@
 import { ViewProps, View, SafeAreaView } from 'react-native';
-import React, { FC } from 'react';
+import React, {FC, memo} from 'react';
 
 type Props = ViewProps & { isSafe?: boolean };
-const CenterView: FC<Props> = ({ style, children, isSafe, ...props }) => {
+const CenterView: FC<Props> = memo(({ style, children, isSafe, ...props }) => {
   return isSafe ? (
-    <SafeAreaView style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, style]} {...props}>
-      {children}
-    </SafeAreaView>
+      <SafeAreaView style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, style]} {...props}>
+        {children}
+      </SafeAreaView>
   ) : (
-    <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, style]} {...props}>
-      {children}
-    </View>
+      <View style={[{ flex: 1, justifyContent: 'center', alignItems: 'center' }, style]} {...props}>
+        {children}
+      </View>
   );
-};
+});
 
 CenterView.defaultProps = {
   isSafe: false
