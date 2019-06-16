@@ -67,7 +67,7 @@ export const moviesReducer: Reducer<MoviesState, MoviesActions> = (
       return { ...state, nowPlayings, populars, topRateds, upcomings, searchMovies, isLoading: false };
     }
     case 'FETCH_MOVIE_SUCCESS': {
-      return { ...state, selectedMovie: action.payload.movie };
+      return { ...state, isLoading: false, selectedMovie: action.payload.movie };
     }
     default: {
       return state;

@@ -118,6 +118,15 @@ export interface Movie {
   vote_count: number;
 }
 
+export enum MovieStatus {
+  Rumored = 'Rumored',
+  Planned = 'Planned',
+  InProduction = 'In Production',
+  PostProduction = 'Post Production',
+  Released = 'Released',
+  Canceled = 'Canceled'
+}
+
 export interface MovieDetail extends Movie {
   belongs_to_collection?: BelongsToCollection;
   budget: number;
@@ -128,7 +137,7 @@ export interface MovieDetail extends Movie {
   revenue: number;
   runtime: number;
   spoken_languages: SpokenLanguage[];
-  status: string;
+  status: MovieStatus;
   tagline: string;
   videos: Videos;
   images: Images;
