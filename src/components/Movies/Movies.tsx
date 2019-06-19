@@ -8,14 +8,12 @@ import MediaContainer from '@ui/MediaContainer';
 const Movies: StackScreenComponent<MoviesScreenProps> = ({ fetchMovies, nowPlayings, isLoading, populars, upcomings, topRateds, navigation }) => {
   const onItemSelected = useCallback(
     (id: number) => {
-      console.log('movie selected --> ', { id });
       navigation.navigate('MovieDetails', { id });
     },
     [nowPlayings, populars, upcomings, topRateds]
   );
 
   const onViewMorePressed = (type: MovieEndpointsPath) => () => {
-    console.log('movie type -->', type);
     navigation.navigate('FilterMovies', { movieType: type });
   };
 

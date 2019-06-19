@@ -9,6 +9,8 @@ export type ConfigurationState = {
   configuration: Configuration | null;
   backdropPath: string;
   posterPath: string;
+  profilePath: string;
+  logoPath: string;
   movieGenres: {
     [id: number]: string
   },
@@ -22,6 +24,8 @@ const initialState = {
   configuration: null,
   backdropPath: '',
   posterPath: '',
+  profilePath: '',
+  logoPath: '',
   movieGenres: {},
   tvGenres: {}
 } as ConfigurationState;
@@ -35,11 +39,15 @@ export const configurationReducer: Reducer<ConfigurationState, ConfigurationActi
       const { configuration } = action.payload;
       const backdropPath = `${ configuration.images.secure_base_url }${ configuration.images.backdrop_sizes.find(s => s === 'original') }`;
       const posterPath = `${ configuration.images.secure_base_url }${ configuration.images.poster_sizes.find(s => s === 'original') }`;
+      const profilePath = `${ configuration.images.secure_base_url }${ configuration.images.profile_sizes.find(s => s === 'original') }`;
+      const logoPath = `${ configuration.images.secure_base_url }${ configuration.images.logo_sizes.find(s => s === 'original') }`;
       return {
         ...state,
         configuration,
         backdropPath,
         posterPath,
+        profilePath,
+        logoPath,
         isLoading: false
       };
     }
