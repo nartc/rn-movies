@@ -37,7 +37,7 @@ As any other RN application on Github, what you need to do:
 <a href="https://ibb.co/JjGp4Cn"><img height="900" width="400" src="https://i.ibb.co/chZ8HxJ/nMPJ1Du.png" alt="nMPJ1Du" border="0"></a>
 <a href="https://ibb.co/tCTb9N3"><img height="900" width="400" src="https://i.ibb.co/zfTSzLN/image.png" alt="image" border="0"></a>
 <a href="https://ibb.co/KFQzrbF"><img height="900" width="400" src="https://i.ibb.co/6gpJWrg/image.png" alt="image" border="0"></a>
-<a href="https://ibb.co/0nf1SDp"><img height="900 width="400" src="https://i.ibb.co/Jcz84BW/image.png" alt="image" border="0"></a>
+<a href="https://ibb.co/0nf1SDp"><img height="900" width="400" src="https://i.ibb.co/Jcz84BW/image.png" alt="image" border="0"></a>
 <a href="https://ibb.co/ZXcJh39"><img height="900" width="400" src="https://i.ibb.co/H4G2r0Z/image.png" alt="image" border="0"></a>
 <a href="https://ibb.co/KyWMcpg"><img height="900" width="400" src="https://i.ibb.co/dKDdswv/image.png" alt="image" border="0"></a>
 
