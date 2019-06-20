@@ -1,6 +1,8 @@
 import LandingScreen from '@screens/Landing/LandingScreen';
 import MovieDetailModalScreen from '@screens/Movies/MovieDetailModalScreen';
 import FilterMoviesScreen from '@screens/Movies/FilterMoviesScreen';
+import FilterShowsScreen from '@screens/Shows/FilterShowsScreen';
+import ShowDetailModalScreen from '@screens/Shows/ShowDetailModalScreen';
 import React from 'react';
 import {
   createStackNavigator,
@@ -37,6 +39,9 @@ const showsStack = createStackNavigator(
   {
     Shows: {
       screen: ShowsScreen
+    },
+    FilterShows: {
+      screen: FilterShowsScreen
     }
   },
   {
@@ -135,7 +140,8 @@ const landingStack = createStackNavigator(
 
 const appStack = createStackNavigator({
   MainTab: mainTabNavigator,
-  MovieDetails: MovieDetailModalScreen
+  MovieDetails: MovieDetailModalScreen,
+  ShowDetails: ShowDetailModalScreen
 }, {
   mode: 'modal',
   initialRouteName: 'MainTab',

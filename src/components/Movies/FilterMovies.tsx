@@ -7,9 +7,47 @@ import GradientListItem from '@ui/GradientListItem';
 import { movieTypesMap } from '@utils/constants';
 import { StackScreenComponent } from '@utils/types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, SafeAreaView } from 'react-native';
+import { FlatList, Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { Divider, SearchBar, Text } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
+
+const styles = StyleSheet.create({
+  gradientContainer: {
+    backgroundColor: colors.default,
+    marginHorizontal: 10,
+    marginVertical: 5,
+    flex: 1,
+    padding: 10,
+    borderRadius: 10
+  },
+  gradientTitle: {
+    fontSize: 14
+  },
+  gradientSubTitle: {
+    fontWeight: 'bold',
+    color: colors.light,
+    fontSize: 10
+  },
+  flexed: {
+    flex: 1
+  },
+  searchBarContainer: {
+    backgroundColor: colors.default
+  },
+  searchBarInputContainer: {
+    backgroundColor: colors.default,
+    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.secondary,
+    borderTopColor: colors.secondary,
+    borderBottomColor: colors.secondary,
+    borderRadius: 20
+  },
+  searchBarInput: {
+    color: colors.secondary,
+    borderColor: colors.secondary
+  }
+});
 
 const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = ({ navigation, isLoading, movies, movieType, fetchMoviesByPage, filterMovies }) => {
   const [page, setPage] = useState(1);
@@ -38,18 +76,11 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = ({ navigati
                         start: { x: 1, y: 0 },
                         end: { x: 0, y: 0.2 },
                       } }
-                      containerStyle={ {
-                        backgroundColor: colors.default,
-                        marginHorizontal: 10,
-                        marginVertical: 5,
-                        flex: 1,
-                        padding: 10,
-                        borderRadius: 10
-                      } }
+                      containerStyle={ styles.gradientContainer }
                       title={ item.item.title }
-                      titleStyle={ { fontSize: 14 } }
+                      titleStyle={ styles.gradientTitle }
                       subtitle={ (item.item.genre_names as string[]).join(', ') }
-                      subtitleStyle={ { fontWeight: 'bold', color: colors.light, fontSize: 10 } }
+                      subtitleStyle={ styles.gradientSubTitle }
                       onPress={ () => navigation.navigate('MovieDetails', { id: item.item.id }) }/>
   );
 
@@ -77,7 +108,7 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = ({ navigati
   );
 
   return (
-    <SafeAreaView style={ { flex: 1 } }>
+    <SafeAreaView style={ styles.flexed }>
       <SearchBar platform={ Platform.OS === 'ios' ? 'ios' : 'android' }
                  placeholder={ `Filter ${ movieTypesMap[movieType] }` }
                  placeholderTextColor={ colors.secondary }
@@ -86,17 +117,9 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = ({ navigati
                    setIsFiltering(!!text);
                    setQuery(text);
                  } }
-                 containerStyle={ { backgroundColor: colors.default } }
-                 inputContainerStyle={ {
-                   backgroundColor: colors.default,
-                   borderWidth: 1,
-                   borderBottomWidth: 1,
-                   borderColor: colors.secondary,
-                   borderTopColor: colors.secondary,
-                   borderBottomColor: colors.secondary,
-                   borderRadius: 20
-                 } }
-                 inputStyle={ { color: colors.secondary, borderColor: colors.secondary } }
+                 containerStyle={ styles.searchBarContainer }
+                 inputContainerStyle={ styles.searchBarInputContainer }
+                 inputStyle={ styles.searchBarInput }
                  cancelButtonProps={ { color: colors.primary } }
                  clearIcon={ { color: colors.secondary, name: 'close', type: 'material-community' } }
                  cancelIcon={ { color: colors.secondary, name: 'arrow-left', type: 'material-community' } }

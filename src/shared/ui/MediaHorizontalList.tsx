@@ -1,9 +1,9 @@
 import { Movie, TvShow } from '@api/Models';
 import { colors } from '@styles/Colors';
+import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import React, { FC, memo } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Card, Divider, Text } from 'react-native-elements';
-import StarRating from 'react-native-star-rating';
 
 const styles = StyleSheet.create({
   mediaListContainer: {
@@ -36,17 +36,6 @@ const styles = StyleSheet.create({
   },
   mediaWrapper: {
     paddingHorizontal: 0
-  },
-  mediaContent: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  mediaRatingContainer: {
-    justifyContent: 'flex-start'
-  },
-  mediaRatingText: {
-    marginLeft: 5,
-    fontSize: 12
   }
 });
 
@@ -76,15 +65,9 @@ const MediaHorizontalList: FC<MediaHorizontalListProps> = memo(({ medias, mediaT
                   imageStyle={ styles.mediaImage }
                   containerStyle={ styles.mediaContainer }
                   wrapperStyle={ styles.mediaWrapper }>
-              <View style={ styles.mediaContent }>
-                <StarRating rating={ (media.vote_average / 10) * 5 }
-                            starSize={ 12 }
-                            fullStarColor={ colors.primary }
-                            disabled
-                            containerStyle={ styles.mediaRatingContainer }/>
-                <Text style={ { ...styles.whiteText, ...styles.mediaRatingText } }>({ media.vote_count })</Text>
-              </View>
-              <Text style={ styles.whiteText }>{ mediaType === 'movie' ? (media as Movie).title : (media as TvShow).name }</Text>
+              <MediaTitleWithRating rating={ media.vote_average }
+                                    count={ media.vote_count }
+                                    title={ mediaType === 'movie' ? (media as Movie).title : (media as TvShow).name }/>
             </Card>
           </TouchableOpacity>
         )) }

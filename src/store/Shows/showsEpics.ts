@@ -1,8 +1,8 @@
-import { TvShow } from '@api/Models';
-import { getShows } from '@api/Shows';
+import { TvShow, TvShowDetail } from '@api/Models';
+import { getShowByid, getShows } from '@api/Shows';
 import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
-import { FETCH_SHOWS, showsActions } from '@store/Shows/showsActions';
+import { FETCH_SHOW, FETCH_SHOWS, FETCH_SHOWS_BY_PAGE, showsActions } from '@store/Shows/showsActions';
 import { ShowsActions } from '@store/Shows/showsReducer';
 import { ActionsObservable, StateObservable } from 'redux-observable';
 import { from, of } from 'rxjs';
@@ -20,24 +20,87 @@ const fetchShowsEpic = (action$: ActionsObservable<ShowsActions>, state$: StateO
       getShows('on_the_air'),
     ]);
     return from(showsFetch).pipe(
-      map(mapConfigurationToShow(state.configurationState)),
+      map(mapConfigurationToShows(state.configurationState)),
       map(shows => showsActions.fetchShowsSuccess(shows)),
       catchError(() => of(showsActions.fetchShowsFailed()))
     );
   })
 );
 
-const mapConfigurationToShow = (configuration: ConfigurationState) => (shows: TvShow[][]) => {
+const fetchShowsByPageEpic = (action$: ActionsObservable<ShowsActions>, state$: StateObservable<AppState>) => action$.pipe(
+  filter(isOfType(FETCH_SHOWS_BY_PAGE)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    return from(getShows(action.payload.type, action.payload.page)).pipe(
+      map(mapConfigurationToShow(state.configurationState)),
+      map(shows => showsActions.fetchShowsByPageSuccess(action.payload.type, shows)),
+      catchError(() => of(showsActions.fetchShowsByPageFailed()))
+    );
+  })
+);
+
+const mapConfigurationToShows = (configuration: ConfigurationState) => (shows: TvShow[][]) => {
   for (let i = 0, len = shows.length; i < len; i++) {
-    for (let j = 0, innerLen = shows[i].length; j < innerLen; j++) {
-      const show = shows[i][j];
-      show.genre_names = show.genre_ids.map(id => configuration.tvGenres[id]);
-      show.backdrop_path = `${ configuration.backdropPath }${ show.backdrop_path }`;
-      show.poster_path = `${ configuration.posterPath }${ show.poster_path }`;
-    }
+    shows[i] = mapConfigurationToShow(configuration)(shows[i]);
   }
 
   return shows;
 };
 
-export const showsEpics = [fetchShowsEpic];
+const mapConfigurationToShow = (configuration: ConfigurationState) => (shows: TvShow[]) => {
+  for (let i = 0, len = shows.length; i < len; i++) {
+    const show = shows[i];
+    show.genre_names = show.genre_ids.map(id => configuration.tvGenres[id]);
+    show.backdrop_path = `${ configuration.backdropPath }${ show.backdrop_path }`;
+    show.poster_path = `${ configuration.posterPath }${ show.poster_path }`;
+  }
+
+  return shows;
+};
+
+const fetchShowEpic = (actions$: ActionsObservable<ShowsActions>, state$: StateObservable<AppState>) => actions$.pipe(
+  filter(isOfType(FETCH_SHOW)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    return from(getShowByid(action.payload.id)).pipe(
+      map(mapConfigurationToShowDetail(state.configurationState)),
+      map(show => showsActions.fetchShowSuccess(show)),
+      catchError(() => of(showsActions.fetchShowFailed()))
+    );
+  })
+);
+
+const mapConfigurationToShowDetail = (configuration: ConfigurationState) => (show: TvShowDetail) => {
+  show.backdrop_path = `${ configuration.backdropPath }${ show.backdrop_path }`;
+  show.poster_path = `${ configuration.posterPath }${ show.poster_path }`;
+  show.genre_names = show.genres.map(g => g.name);
+  show.images.backdrops = show.images.backdrops.map(bd => ({
+    ...bd,
+    file_path: `${ configuration.backdropPath }${ bd.file_path }`
+  }));
+  show.images.posters = show.images.posters.map(pt => ({
+    ...pt,
+    file_path: `${ configuration.posterPath }${ pt.file_path }`
+  }));
+  show.credits.cast = show.credits.cast.map(c => ({
+    ...c,
+    profile_path: `${ configuration.profilePath }${ c.profile_path }`
+  }));
+  show.credits.crew = show.credits.crew.map(cr => ({
+    ...cr,
+    profile_path: `${ configuration.profilePath }${ cr.profile_path }`
+  }));
+  show.production_companies = show.production_companies.map(pc => ({
+    ...pc,
+    logo_path: `${ configuration.logoPath }${ pc.logo_path }`
+  }));
+  show.networks = show.networks.map(nw => ({ ...nw, logo_path: `${ configuration.logoPath }${ nw.logo_path }` }));
+  show.recommendations.results = show.recommendations.results.map(rc => ({
+    ...rc,
+    backdrop_path: `${ configuration.backdropPath }${ rc.backdrop_path }`,
+    poster_path: `${ configuration.posterPath }${ rc.poster_path }`
+  }));
+  return show;
+};
+
+export const showsEpics = [fetchShowsEpic, fetchShowEpic, fetchShowsByPageEpic];
