@@ -1,5 +1,5 @@
 import { colors } from '@styles/Colors';
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import React from 'react';
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native';
 import { Divider, Text } from 'react-native-elements';
@@ -17,7 +17,7 @@ type MediaDetailSectionProps = {
   containerStyle?: StyleProp<ViewStyle>;
   sectionTitle: string;
 };
-const MediaDetailSection: FC<MediaDetailSectionProps> = ({ containerStyle, sectionTitle, children }) => {
+const MediaDetailSection: FC<MediaDetailSectionProps> = memo(({ containerStyle, sectionTitle, children }) => {
   return (
     <View style={ containerStyle }>
       <Text h4 h4Style={ styles.titleText }>{ sectionTitle }</Text>
@@ -25,7 +25,7 @@ const MediaDetailSection: FC<MediaDetailSectionProps> = ({ containerStyle, secti
       { children }
     </View>
   );
-};
+});
 
 MediaDetailSection.defaultProps = {
   containerStyle: {}

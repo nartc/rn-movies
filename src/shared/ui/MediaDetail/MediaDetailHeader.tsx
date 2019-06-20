@@ -1,5 +1,5 @@
 import { colors } from '@styles/Colors';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Animated, Platform, StyleSheet } from 'react-native';
 import { Icon, Image, Text } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
@@ -42,7 +42,7 @@ type MediaDetailHeaderProps = {
   headerImage: string;
   onPop: () => void;
 };
-const MediaDetailHeader: FC<MediaDetailHeaderProps> = (
+const MediaDetailHeader: FC<MediaDetailHeaderProps> = memo((
   {
     animatedTitle,
     animatedHeaderOpacity,
@@ -89,6 +89,6 @@ const MediaDetailHeader: FC<MediaDetailHeaderProps> = (
       </Animated.View>
     </>
   );
-};
+});
 
 export default MediaDetailHeader;

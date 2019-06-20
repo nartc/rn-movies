@@ -1,10 +1,7 @@
-import { JSXElement } from '@babel/types';
-import { colors } from '@styles/Colors';
 import { dimensions } from '@styles/Dimensions';
-import React, { FC, ReactNode } from 'react';
+import React, { FC, memo, ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-elements';
-import StarRating from 'react-native-star-rating';
 
 const styles = StyleSheet.create({
   infoSectionWrapper: {
@@ -21,13 +18,13 @@ type MediaDetailInfoProps = {
   infoText?: string;
   infoComponent?: ReactNode;
 };
-const MediaDetailInfo: FC<MediaDetailInfoProps> = ({ infoTitle, infoComponent, infoText }) => {
+const MediaDetailInfo: FC<MediaDetailInfoProps> = memo(({ infoTitle, infoComponent, infoText }) => {
   return (
     <View style={ styles.infoSectionWrapper }>
       <Text>{ infoTitle }: </Text>
       { infoText ? <Text>{ infoText }</Text> : infoComponent }
     </View>
   );
-};
+});
 
 export default MediaDetailInfo;

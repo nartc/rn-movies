@@ -1,5 +1,5 @@
 import { colors } from '@styles/Colors';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { ScrollView, StyleProp, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 import { Card } from 'react-native-elements';
 
@@ -34,15 +34,17 @@ function MediaDetailHorizontalList<T>(props: MediaDetailHorizontalListProps<T>) 
     </Card>
   );
 
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={ false }>
-      { items.map((item, i) => (
-        !!onPress ? <TouchableOpacity key={ i.toString() } onPress={ () => onPress(item) }>
-          { renderContent(item, i) }
-        </TouchableOpacity> : renderContent(item, i)
-      )) }
-    </ScrollView>
-  );
+  return useMemo(() => (
+    (
+      <ScrollView horizontal showsHorizontalScrollIndicator={ false }>
+        { items.map((item, i) => (
+          !!onPress ? <TouchableOpacity key={ i.toString() } onPress={ () => onPress(item) }>
+            { renderContent(item, i) }
+          </TouchableOpacity> : renderContent(item, i)
+        )) }
+      </ScrollView>
+    )
+  ), [items, imageProp]);
 }
 
 export default MediaDetailHorizontalList;

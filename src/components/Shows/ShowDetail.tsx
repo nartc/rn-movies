@@ -12,7 +12,7 @@ import MediaDetailSection from '@ui/MediaDetail/MediaDetailSection';
 import MediaDetailTitle from '@ui/MediaDetail/MediaDetailTitle';
 import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import { StackScreenComponent } from '@utils/types';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Animated, FlatList, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
@@ -26,9 +26,9 @@ const ShowDetail: StackScreenComponent<ShowDetailModalScreenProps> = ({ isLoadin
     && show.videos.results.find(v => v.site === MovieVideoSite.Youtube
       && (v.type === MovieVideoType.Trailer || v.type === MovieVideoType.Teaser));
 
-  const onRecommendationPress = (item: TvShow) => {
+  const onRecommendationPress = useCallback((item: TvShow) => {
     navigation.replace('ShowDetails', { id: item.id });
-  };
+  }, []);
 
   return isLoading || !show ? (
     <MediaDetailLoading/>
@@ -41,7 +41,7 @@ const ShowDetail: StackScreenComponent<ShowDetailModalScreenProps> = ({ isLoadin
                          animatedTitle={ animatedTitle }
                          headerText={ show.name }
                          headerImage={ show.images.posters[show.images.posters.length - 1].file_path }
-                         onPop={ navigation.pop }/>
+                         onPop={ () => navigation.pop() }/>
       <Animated.ScrollView style={ { flex: 1 } }
                            scrollEventThrottle={ 16 }
                            onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }]) }>

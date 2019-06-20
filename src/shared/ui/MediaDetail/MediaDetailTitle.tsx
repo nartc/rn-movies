@@ -1,5 +1,5 @@
 import { colors } from '@styles/Colors';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Badge, Text } from 'react-native-elements';
 
@@ -31,7 +31,7 @@ type MediaDetailTitleProps = {
   status: string;
 };
 
-const MediaDetailTitle: FC<MediaDetailTitleProps> = ({ title, overview, genres, status }) => {
+const MediaDetailTitle: FC<MediaDetailTitleProps> = memo(({ title, overview, genres, status }) => {
   return (
     <View>
       <Text h4 h4Style={ styles.title }>{ title }</Text>
@@ -43,6 +43,6 @@ const MediaDetailTitle: FC<MediaDetailTitleProps> = ({ title, overview, genres, 
       <Text style={ styles.overview }>{ overview }</Text>
     </View>
   );
-};
+});
 
 export default MediaDetailTitle;

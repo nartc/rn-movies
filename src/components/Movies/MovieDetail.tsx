@@ -11,7 +11,7 @@ import MediaDetailSection from '@ui/MediaDetail/MediaDetailSection';
 import MediaDetailTitle from '@ui/MediaDetail/MediaDetailTitle';
 import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import { StackScreenComponent } from '@utils/types';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Animated, FlatList, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import { MovieDetailModalScreenProps } from '@screens/Movies/MovieDetailModalScreen';
@@ -23,13 +23,15 @@ const MovieDetail: StackScreenComponent<MovieDetailModalScreenProps> = ({ movie,
   const { scrollYRef, animatedImageHeight, animatedImageTranslateY, animatedImageOpacity, animatedHeaderOpacity, animatedTitle } = useDetailAnimations();
   useFetchWithParam(id, fetchMovieById);
 
+  console.log(navigation);
+
   const trailer = movie
     && movie.videos.results.find(v => v.site === MovieVideoSite.Youtube
       && (v.type === MovieVideoType.Trailer || v.type === MovieVideoType.Teaser));
 
-  const onRecommendationPress = (movie: Movie) => {
+  const onRecommendationPress = useCallback((movie: Movie) => {
     navigation.replace('MovieDetails', { id: movie.id });
-  };
+  }, []);
 
   return isLoading || !movie ? (
     <MediaDetailLoading/>
@@ -42,7 +44,7 @@ const MovieDetail: StackScreenComponent<MovieDetailModalScreenProps> = ({ movie,
                          animatedTitle={ animatedTitle }
                          headerText={ movie.title }
                          headerImage={ movie.images.posters[movie.images.posters.length - 1].file_path }
-                         onPop={ navigation.pop }/>
+                         onPop={ () => navigation.pop() }/>
       <Animated.ScrollView style={ { flex: 1 } }
                            scrollEventThrottle={ 16 }
                            onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }]) }>
