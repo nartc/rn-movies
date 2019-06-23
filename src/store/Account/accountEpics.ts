@@ -83,9 +83,10 @@ const getAverageMoviesRatingEpic = (
     }),
     switchMap(pages => {
       const ratedMoviesFetched = [];
+      const getAverage = (arr: number[]) => arr.reduce((avg, cur) => avg + cur) / arr.length;
 
       if (pages < 2) {
-        const average = flattenRatings.reduce((avg, cur) => avg + cur) / flattenRatings.length;
+        const average = getAverage(flattenRatings);
         return of(accountActions.getAverageMoviesRatingSuccess(average));
       }
 
@@ -101,7 +102,7 @@ const getAverageMoviesRatingEpic = (
       return forkJoin(ratedMoviesFetched).pipe(
         map(ratings => {
           flattenRatings = flattenRatings.concat(...ratings);
-          return flattenRatings.reduce((avg, cur) => avg + cur) / flattenRatings.length;
+          return getAverage(flattenRatings);
         }),
         map(average => accountActions.getAverageMoviesRatingSuccess(average)),
         catchError(() => of(accountActions.getAverageMoviesRatingFailed()))

@@ -25,6 +25,7 @@ const CarouselItem: FC<CarouselItemProps> = memo(
           <View style={ styles.carouselItem }>
             <Image
               source={ { uri: backdropPath } }
+              resizeMode={ 'cover' }
               containerStyle={ styles.flexed }
               style={ styles.carouselItemImage }
               placeholderStyle={ { backgroundColor: colors.default } }
