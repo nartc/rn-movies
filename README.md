@@ -24,12 +24,12 @@ As any other RN application on Github, what you need to do:
 - [ ] Master Search component for both `Movie` and `TvShow`
 - [ ] Linking `trailer` to `Youtube`
 - [ ] Implement TMDb's Authentication
- 1. [ ] Login as Member
+ 1. [x] Login as Member
  2. [ ] Rate media
  3. [ ] CRUD Playlist
+ 4. [ ] Profile Screen
 - [ ] Implement Settings screen
- 1. [ ] Profile Screen
- 2. [ ] Some specific settings that I can't think of at the moment
+- [ ] Some specific settings that I can't think of at the moment
 
 ## Screenshots
 
