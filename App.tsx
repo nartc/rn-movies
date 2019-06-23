@@ -12,10 +12,10 @@ const store = configureStore();
 
 const App: FC = () => {
   return (
-    <Provider store={store}>
+    <Provider store={ store }>
       <Themed>
-        <StatusBar barStyle={'light-content'} />
-        <AppNavigator />
+        <StatusBar barStyle={ 'light-content' }/>
+        <AppNavigator/>
       </Themed>
     </Provider>
   );

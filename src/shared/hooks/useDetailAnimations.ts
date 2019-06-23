@@ -5,13 +5,13 @@ export const useDetailAnimations = () => {
   const scrollYRef = useRef(new Animated.Value(0));
 
   const animatedImageHeight = scrollYRef.current.interpolate({
-    inputRange: [0, 35],
+    inputRange: [0, 30],
     outputRange: [555, 80],
     extrapolate: 'clamp'
   });
 
   const animatedImageOpacity = animatedImageHeight.interpolate({
-    inputRange: [80, 200],
+    inputRange: [80, 555],
     outputRange: [0, 1],
     extrapolate: 'clamp'
   });

@@ -27,7 +27,10 @@ const fetchShowsEpic = (action$: ActionsObservable<ShowsActions>, state$: StateO
   })
 );
 
-const fetchShowsByPageEpic = (action$: ActionsObservable<ShowsActions>, state$: StateObservable<AppState>) => action$.pipe(
+const fetchShowsByPageEpic = (
+  action$: ActionsObservable<ShowsActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
   filter(isOfType(FETCH_SHOWS_BY_PAGE)),
   withLatestFrom(state$),
   switchMap(([action, state]) => {

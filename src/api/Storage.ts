@@ -9,3 +9,7 @@ export const setSessionid = async (sessionId: string) => {
 export const getSessionId = async () => {
   return AsyncStorage.getItem(sessionStorageKey);
 };
+
+export const clearStorage = async () => {
+  await AsyncStorage.clear();
+};

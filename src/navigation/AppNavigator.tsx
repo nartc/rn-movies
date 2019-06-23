@@ -1,3 +1,4 @@
+import AccountLandingScreen from '@screens/AccountLanding/AccountLandingScreen';
 import LandingScreen from '@screens/Landing/LandingScreen';
 import MovieDetailModalScreen from '@screens/Movies/MovieDetailModalScreen';
 import FilterMoviesScreen from '@screens/Movies/FilterMoviesScreen';
@@ -19,12 +20,8 @@ import { colors } from '@styles/Colors';
 
 const moviesStack = createStackNavigator(
   {
-    Movies: {
-      screen: MoviesScreen
-    },
-    FilterMovies: {
-      screen: FilterMoviesScreen
-    }
+    Movies: MoviesScreen,
+    FilterMovies: FilterMoviesScreen
   },
   {
     initialRouteName: 'Movies',
@@ -37,12 +34,8 @@ const moviesStack = createStackNavigator(
 
 const showsStack = createStackNavigator(
   {
-    Shows: {
-      screen: ShowsScreen
-    },
-    FilterShows: {
-      screen: FilterShowsScreen
-    }
+    Shows: ShowsScreen,
+    FilterShows: FilterShowsScreen
   },
   {
     initialRouteName: 'Shows',
@@ -55,9 +48,7 @@ const showsStack = createStackNavigator(
 
 const personalStack = createStackNavigator(
   {
-    Personal: {
-      screen: PersonalScreen
-    }
+    Personal: PersonalScreen
   },
   {
     initialRouteName: 'Personal',
@@ -70,9 +61,7 @@ const personalStack = createStackNavigator(
 
 const settingsStack = createStackNavigator(
   {
-    Settings: {
-      screen: SettingsScreen
-    }
+    Settings: SettingsScreen
   },
   {
     initialRouteName: 'Settings',
@@ -126,17 +115,25 @@ const mainTabNavigator = createBottomTabNavigator(
   }
 );
 
-const landingStack = createStackNavigator(
-  {
-    Landing: {
-      screen: LandingScreen
-    }
-  },
-  {
-    initialRouteName: 'Landing',
-    mode: 'modal'
+const landingStack = createStackNavigator({
+  Landing: LandingScreen
+}, {
+  initialRouteName: 'Landing',
+  headerMode: 'none',
+  cardStyle: {
+    backgroundColor: colors.default
   }
-);
+});
+
+const accountLandingStack = createStackNavigator({
+  AccountLanding: AccountLandingScreen
+}, {
+  initialRouteName: 'AccountLanding',
+  headerMode: 'none',
+  cardStyle: {
+    backgroundColor: colors.default
+  }
+});
 
 const appStack = createStackNavigator({
   MainTab: mainTabNavigator,
@@ -153,12 +150,9 @@ const appStack = createStackNavigator({
 
 const mainNavigator = createSwitchNavigator(
   {
-    LandingStack: {
-      screen: landingStack
-    },
-    MainTab: {
-      screen: appStack
-    }
+    LandingStack: landingStack,
+    AccountLandingStack: accountLandingStack,
+    MainTab: appStack
   },
   {
     initialRouteName: 'LandingStack',

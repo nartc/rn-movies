@@ -6,7 +6,7 @@ import CenterView from '@ui/CenterView';
 import GradientListItem from '@ui/GradientListItem';
 import { movieTypesMap } from '@utils/constants';
 import { StackScreenComponent } from '@utils/types';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, Platform, SafeAreaView, StyleSheet } from 'react-native';
 import { Divider, SearchBar, Text } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
@@ -49,7 +49,15 @@ const styles = StyleSheet.create({
   }
 });
 
-const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = ({ navigation, isLoading, movies, movieType, fetchMoviesByPage, filterMovies }) => {
+const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
+  {
+    navigation,
+    isLoading,
+    movies,
+    movieType,
+    fetchMoviesByPage,
+    filterMovies
+  }) => {
   const [page, setPage] = useState(1);
   const [isFiltering, setIsFiltering] = useState(false);
   const [query, setQuery] = useState('');

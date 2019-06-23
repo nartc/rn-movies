@@ -1,11 +1,17 @@
-import { Movie, MovieDetail } from '@api/Models';
+import { Movie, MovieDetail, Session } from '@api/Models';
 import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
-import { FETCH_MOVIE, FETCH_MOVIES, FETCH_MOVIES_BY_PAGE, moviesActions } from '@store/Movies/moviesActions';
+import {
+  FETCH_MOVIE,
+  FETCH_MOVIE_ACCOUNT_STATES,
+  FETCH_MOVIES,
+  FETCH_MOVIES_BY_PAGE,
+  moviesActions
+} from '@store/Movies/moviesActions';
 import { MoviesActions } from '@store/Movies/moviesReducer';
 import { ActionsObservable, StateObservable } from 'redux-observable';
 import { switchMap, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
-import { getMovies, getMovieById } from '@api/Movies';
+import { getMovies, getMovieById, getMovieAccountState } from '@api/Movies';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 import { isOfType } from 'typesafe-actions';
@@ -106,4 +112,18 @@ const mapConfigurationToMovieDetail = (configuration: ConfigurationState) => (mo
   return movie;
 };
 
-export const moviesEpics = [fetchMoviesEpic, fetchMovieEpic, fetchMoviesByPageEpic];
+const fetchMovieAccountStatesEpic = (
+  action$: ActionsObservable<MoviesActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
+  filter(isOfType(FETCH_MOVIE_ACCOUNT_STATES)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    return from(getMovieAccountState(action.payload.id, (state.authState.session as Session).session_id)).pipe(
+      map(accountState => moviesActions.fetchMovieAccountStatesSuccess(accountState)),
+      catchError(() => of(moviesActions.fetchMovieAccountStatesFailed()))
+    );
+  })
+);
+
+export const moviesEpics = [fetchMoviesEpic, fetchMovieEpic, fetchMoviesByPageEpic, fetchMovieAccountStatesEpic];

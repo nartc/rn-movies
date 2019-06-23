@@ -12,7 +12,8 @@ const mapStateToProps = (state: AppState, ownProps: StackScreenProps<{ id: numbe
 });
 
 const mapDispatchToProps = {
-  fetchMovieById: moviesActions.fetchMovie
+  fetchMovieById: moviesActions.fetchMovie,
+  fetchMovieAccountStates: moviesActions.fetchMovieAccountStates
 };
 
 export type MovieDetailModalScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;

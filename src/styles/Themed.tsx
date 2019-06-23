@@ -30,7 +30,7 @@ const theme: Theme = {
 };
 
 const Themed: FC = ({ children }) => {
-  return <ThemeProvider theme={theme}>{children as ReactChild}</ThemeProvider>;
+  return <ThemeProvider theme={ theme }>{ children as ReactChild }</ThemeProvider>;
 };
 
 export default Themed;

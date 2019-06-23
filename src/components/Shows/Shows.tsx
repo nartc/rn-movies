@@ -5,10 +5,18 @@ import { StackScreenComponent } from '@utils/types';
 import React, { useCallback } from 'react';
 import MediaContainer from '@ui/MediaContainer';
 
-const Shows: StackScreenComponent<ShowsScreenProps> = ({ isLoading, populars, fetchShows, airingTodays, onTheAirs, topRateds, navigation }) => {
+const Shows: StackScreenComponent<ShowsScreenProps> = (
+  {
+    isLoading,
+    populars,
+    fetchShows,
+    airingTodays,
+    onTheAirs,
+    topRateds,
+    navigation
+  }) => {
   const onItemTouched = useCallback(
     (id: number) => {
-      console.log('tvshow selected -->', { id });
       navigation.navigate('ShowDetails', { id });
     },
     [populars, airingTodays, onTheAirs, topRateds]

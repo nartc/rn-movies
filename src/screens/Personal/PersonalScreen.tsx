@@ -1,16 +1,11 @@
+import Personal from '@components/Personal/Personal';
+import { AppState } from '@store/configureStore';
 import React from 'react';
-import CenterView from '@ui/CenterView';
-import { Text, Button } from 'react-native-elements';
-import { StackScreenComponent } from '@utils/types';
+import { connect } from 'react-redux';
 
-type PersonalScreenProps = {};
-const PersonalScreen: StackScreenComponent<PersonalScreenProps> = ({}) => {
-  return (
-    <CenterView>
-      <Text>PersonalScreen</Text>
-      <Button title={'Click me'} />
-    </CenterView>
-  );
+const mapStateToProps = (state: AppState) => {
+  const { account, isLoading } = state.accountState;
+  return { isLoading, account };
 };
 
-export default PersonalScreen;
+export default connect()(Personal);

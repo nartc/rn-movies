@@ -1,4 +1,4 @@
-import { ShowEndpointsPath, TvShow, TvShowDetail } from './Models';
+import { AccountState, ShowEndpointsPath, TvShow, TvShowDetail } from './Models';
 import { getUrl, client } from './Axios';
 
 export const getShows = async (path: ShowEndpointsPath, page: number = 1) => {
@@ -14,5 +14,11 @@ export const getShowByid = async (id: number) => {
     'include_image_language=en,null'
   );
   const response = await client.get<TvShowDetail>(url);
+  return response.data;
+};
+
+export const getShowAccountStates = async (id: number, sessionId: string) => {
+  const url = getUrl(`tv/${ id }/account_states`, `session_id=${ sessionId }`);
+  const response = await client.get<AccountState>(url);
   return response.data;
 };

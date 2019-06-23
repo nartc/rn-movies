@@ -40,7 +40,9 @@ export const showsReducer: Reducer<ShowsState, ShowsActions> = (state = initialS
     }
     case 'FILTER_SHOWS': {
       const { type, query } = action.payload;
-      const filtered = { [type]: state.searchShows[type].filter(s => s.name.toLowerCase().includes(query.toLowerCase())) };
+      const filtered = {
+        [type]: state.searchShows[type].filter(s => s.name.toLowerCase().includes(query.toLowerCase()))
+      };
       return { ...state, filtered };
     }
     case 'FETCH_SHOW_SUCCESS': {

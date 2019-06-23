@@ -13,9 +13,11 @@ export const configurationActions = {
   fetchConfigurationSuccess: (config: Configuration) => action(FETCH_CONFIGURATION_SUCCESS, { configuration: config }),
   fetchConfigurationFailed: () => action(FETCH_CONFIGURATION_FAILED),
   fetchGenres: () => action(FETCH_GENRES),
-  fetchGenresSuccess: (movieGenres: { [id: number]: string }, tvGenres: { [id: number]: string }) => action(FETCH_GENRES_SUCCESS, {
-    movieGenres,
-    tvGenres
-  }),
+  fetchGenresSuccess: (movieGenres: { [id: number]: string }, tvGenres: { [id: number]: string }) => action(
+    FETCH_GENRES_SUCCESS,
+    {
+      movieGenres,
+      tvGenres
+    }),
   fetchGenresFailed: () => action(FETCH_GENRES_FAILED)
 };

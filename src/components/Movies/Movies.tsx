@@ -5,7 +5,16 @@ import React, { useCallback } from 'react';
 import { MoviesScreenProps } from '@screens/Movies/MoviesScreen';
 import MediaContainer from '@ui/MediaContainer';
 
-const Movies: StackScreenComponent<MoviesScreenProps> = ({ fetchMovies, nowPlayings, isLoading, populars, upcomings, topRateds, navigation }) => {
+const Movies: StackScreenComponent<MoviesScreenProps> = (
+  {
+    fetchMovies,
+    nowPlayings,
+    isLoading,
+    populars,
+    upcomings,
+    topRateds,
+    navigation
+  }) => {
   const onItemSelected = useCallback(
     (id: number) => {
       navigation.navigate('MovieDetails', { id });

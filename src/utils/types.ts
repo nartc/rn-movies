@@ -4,8 +4,6 @@ import { NavigationScreenComponent, NavigationStackScreenOptions, NavigationScre
 
 export type ActionTypeWithout<T, K extends keyof T> = ActionType<Omit<T, K>>;
 export type StackScreenProps<TParams = {}> = NavigationScreenProps<TParams, NavigationStackScreenOptions>;
-export type StackScreenComponent<TProps = {}, TParams = {}> = NavigationScreenComponent<
-  TParams,
+export type StackScreenComponent<TProps = {}, TParams = {}> = NavigationScreenComponent<TParams,
   NavigationStackScreenOptions,
-  TProps
->;
+  TProps>;

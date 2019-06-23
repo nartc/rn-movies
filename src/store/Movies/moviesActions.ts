@@ -1,5 +1,5 @@
 import { action } from 'typesafe-actions';
-import { Movie, MovieDetail, MovieEndpointsPath } from '@api/Models';
+import { AccountState, Movie, MovieDetail, MovieEndpointsPath } from '@api/Models';
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
@@ -11,6 +11,9 @@ export const FETCH_MOVIE = 'FETCH_MOVIE';
 export const FETCH_MOVIE_SUCCESS = 'FETCH_MOVIE_SUCCESS';
 export const FETCH_MOVIE_FAILED = 'FETCH_MOVIE_FAILED';
 export const FILTER_MOVIES = 'FILTER_MOVIES';
+export const FETCH_MOVIE_ACCOUNT_STATES = 'FETCH_MOVIE_ACCOUNT_STATES';
+export const FETCH_MOVIE_ACCOUNT_STATES_SUCCESS = 'FETCH_MOVIE_ACCOUNT_STATES_SUCCESS';
+export const FETCH_MOVIE_ACCOUNT_STATES_FAILED = 'FETCH_MOVIE_ACCOUNT_STATES_FAILED';
 
 export const moviesActions = {
   fetchMovies: () => action(FETCH_MOVIES),
@@ -26,5 +29,9 @@ export const moviesActions = {
     movies
   }),
   fetchMoviesByPageFailed: () => action(FETCH_MOVIES_BY_PAGE_FAILED),
-  filterMovies: (type: MovieEndpointsPath, query: string) => action(FILTER_MOVIES, { type, query })
+  filterMovies: (type: MovieEndpointsPath, query: string) => action(FILTER_MOVIES, { type, query }),
+  fetchMovieAccountStates: (id: number) => action(FETCH_MOVIE_ACCOUNT_STATES, { id }),
+  fetchMovieAccountStatesSuccess: (accountState: AccountState) => action(FETCH_MOVIE_ACCOUNT_STATES_SUCCESS,
+    { accountState }),
+  fetchMovieAccountStatesFailed: () => action(FETCH_MOVIE_ACCOUNT_STATES_FAILED)
 };

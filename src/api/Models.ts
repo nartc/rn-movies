@@ -3,15 +3,16 @@ export type ShowEndpointsPath =
   | Exclude<MovieEndpointsPath, 'now_playing' | 'upcoming'>
   | 'on_the_air'
   | 'airing_today';
+export type AccountMediaType = 'favorite' | 'watchlist' | 'rated';
 
-export enum MovieVideoType {
+export enum VideoType {
   Trailer = 'Trailer',
   Clip = 'Clip',
   BHS = 'Behind the Scenes',
   Teaser = 'Teaser'
 }
 
-export enum MovieVideoSite {
+export enum VideoSite {
   Youtube = 'YouTube'
 }
 
@@ -98,6 +99,13 @@ export interface Crew {
 export interface Credits {
   cast: Cast[];
   crew: Crew[];
+}
+
+export interface AccountState {
+  id: number;
+  rated: boolean | { value: number };
+  watchlist: boolean;
+  favorite: boolean;
 }
 
 export interface Movie {
@@ -294,6 +302,7 @@ export interface Account {
   name: string;
   include_adult: boolean;
   username: string;
+  avatar_url: string;
 }
 
 export class WatchlistParams {

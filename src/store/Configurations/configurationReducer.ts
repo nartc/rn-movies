@@ -30,17 +30,24 @@ const initialState = {
   tvGenres: {}
 } as ConfigurationState;
 
-export const configurationReducer: Reducer<ConfigurationState, ConfigurationActions> = (state = initialState, action) => {
+export const configurationReducer: Reducer<ConfigurationState, ConfigurationActions> = (
+  state = initialState,
+  action
+) => {
   switch (action.type) {
     case 'FETCH_GENRES_SUCCESS': {
       return { ...state, movieGenres: action.payload.movieGenres, tvGenres: action.payload.tvGenres };
     }
     case 'FETCH_CONFIGURATION_SUCCESS': {
       const { configuration } = action.payload;
-      const backdropPath = `${ configuration.images.secure_base_url }${ configuration.images.backdrop_sizes.find(s => s === 'original') }`;
-      const posterPath = `${ configuration.images.secure_base_url }${ configuration.images.poster_sizes.find(s => s === 'original') }`;
-      const profilePath = `${ configuration.images.secure_base_url }${ configuration.images.profile_sizes.find(s => s === 'original') }`;
-      const logoPath = `${ configuration.images.secure_base_url }${ configuration.images.logo_sizes.find(s => s === 'original') }`;
+      const backdropPath = `${ configuration.images.secure_base_url }${ configuration.images.backdrop_sizes.find(
+        s => s === 'original') }`;
+      const posterPath = `${ configuration.images.secure_base_url }${ configuration.images.poster_sizes.find(
+        s => s === 'original') }`;
+      const profilePath = `${ configuration.images.secure_base_url }${ configuration.images.profile_sizes.find(
+        s => s === 'original') }`;
+      const logoPath = `${ configuration.images.secure_base_url }${ configuration.images.logo_sizes.find(
+        s => s === 'original') }`;
       return {
         ...state,
         configuration,

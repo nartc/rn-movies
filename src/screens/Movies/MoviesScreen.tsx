@@ -1,15 +1,12 @@
+import Movies from '@components/Movies/Movies';
 import { AppState } from '@store/configureStore';
 import { moviesActions } from '@store/Movies/moviesActions';
 import { connect } from 'react-redux';
-import Movies from '@components/Movies/Movies';
 
-const mapStateToProps = (state: AppState) => ({
-  nowPlayings: state.moviesState.nowPlayings,
-  populars: state.moviesState.populars,
-  upcomings: state.moviesState.upcomings,
-  topRateds: state.moviesState.topRateds,
-  isLoading: state.moviesState.isLoading
-});
+const mapStateToProps = (state: AppState) => {
+  const { populars, topRateds, isLoading, upcomings, nowPlayings } = state.moviesState;
+  return { nowPlayings, populars, upcomings, topRateds, isLoading };
+};
 
 const mapDispatchToProps = {
   fetchMovies: moviesActions.fetchMovies,

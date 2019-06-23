@@ -1,6 +1,6 @@
 import { moviesActions } from '@store/Movies/moviesActions';
 import { ActionType } from 'typesafe-actions';
-import { Movie, MovieDetail } from '@api/Models';
+import { AccountState, Movie, MovieDetail } from '@api/Models';
 import { Reducer } from 'redux';
 
 export type MoviesActions = ActionType<typeof moviesActions>;
@@ -16,7 +16,8 @@ export type MoviesState = {
   },
   filtered: {
     [type: string]: Movie[]
-  }
+  },
+  selectedMovieAccountState: AccountState | null;
 };
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   isLoading: false,
   selectedMovie: null,
   searchMovies: {},
-  filtered: {}
+  filtered: {},
+  selectedMovieAccountState: null
 } as MoviesState;
 
 export const moviesReducer: Reducer<MoviesState, MoviesActions> = (
@@ -35,9 +37,14 @@ export const moviesReducer: Reducer<MoviesState, MoviesActions> = (
   action: MoviesActions
 ) => {
   switch (action.type) {
+    case 'FETCH_MOVIE_ACCOUNT_STATES_SUCCESS': {
+      return { ...state, isLoading: false, selectedMovieAccountState: action.payload.accountState };
+    }
     case 'FILTER_MOVIES': {
       const { type, query } = action.payload;
-      const filtered = { [type]: state.searchMovies[type].filter(m => m.title.toLowerCase().includes(query.toLowerCase())) };
+      const filtered = {
+        [type]: state.searchMovies[type].filter(m => m.title.toLowerCase().includes(query.toLowerCase()))
+      };
       return { ...state, filtered };
     }
     case 'FETCH_MOVIES_BY_PAGE_SUCCESS': {
@@ -46,11 +53,13 @@ export const moviesReducer: Reducer<MoviesState, MoviesActions> = (
       const filtered = { [type]: state.searchMovies[type] };
       return { ...state, isLoading: false, searchMovies, filtered };
     }
+    case 'FETCH_MOVIE_ACCOUNT_STATES':
     case 'FETCH_MOVIES_BY_PAGE':
     case 'FETCH_MOVIE':
     case 'FETCH_MOVIES': {
       return { ...state, isLoading: true };
     }
+    case 'FETCH_MOVIE_ACCOUNT_STATES_FAILED':
     case 'FETCH_MOVIES_BY_PAGE_FAILED':
     case 'FETCH_MOVIES_FAILED':
     case 'FETCH_MOVIE_FAILED': {

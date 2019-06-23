@@ -1,8 +1,7 @@
-import { Movie, TvShow } from '@api/Models';
 import { colors } from '@styles/Colors';
 import React, { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Card, Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 import StarRating from 'react-native-star-rating';
 
 const styles = StyleSheet.create({
