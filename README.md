@@ -23,7 +23,7 @@ As any other RN application on Github, what you need to do:
 - [ ] Galleries `Lightbox` in `MediaDetail`
 - [ ] Master Search component for both `Movie` and `TvShow`
 - [ ] Linking `trailer` to `Youtube`
-- [ ] Implement TMDb's Authentication
+- [x] Implement TMDb's Authentication
  1. [x] Login as Member
  2. [ ] Rate media
  3. [ ] CRUD Playlist
