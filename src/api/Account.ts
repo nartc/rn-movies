@@ -28,8 +28,8 @@ export const getAccountMedias = async <T>(
   const url = getUrl(`account/${ accountId }/${ type }/${ mediaType }`,
     getSessionIdParams(sessionId),
     `page=${ page }`);
-  const response = await client.get<{ results: T[] }>(url);
-  return response.data.results;
+  const response = await client.get<{ total_pages: number, results: Array<T & { rating: number }> }>(url);
+  return response.data;
 };
 
 export const addToWatchList = async (accountId: number, sessionId: string, params: WatchlistParams) => {

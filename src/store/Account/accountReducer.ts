@@ -13,6 +13,8 @@ export type AccountState = {
   favoriteShows: TvShow[];
   ratedShows: TvShow[];
   watchlistShows: TvShow[];
+  averageMoviesRating: number;
+  averageShowsRating: number;
 };
 
 const initialState = {
@@ -25,14 +27,30 @@ const initialState = {
   favoriteShows: [],
   ratedShows: [],
   watchlistShows: [],
+  averageMoviesRating: 0,
+  averageShowsRating: 0
 } as AccountState;
 
 export const accountReducer = createReducer<AccountState, AccountActions>(initialState)
-  .handleAction([accountActions.getAccountDetail, accountActions.getAccountMovies, accountActions.getAccountShows],
+  .handleAction([
+      accountActions.getAccountDetail,
+      accountActions.getAccountMovies,
+      accountActions.getAccountShows,
+      accountActions.getAverageMoviesRating
+    ],
     state => ({ ...state, isLoading: true }))
-  .handleAction([accountActions.getAccountMoviesFailed, accountActions.getAccountShowsFailed], (state, action) => ({
+  .handleAction([
+    accountActions.getAccountMoviesFailed,
+    accountActions.getAccountShowsFailed,
+    accountActions.getAverageMoviesRatingFailed
+  ], state => ({
     ...state,
     isLoading: false
+  }))
+  .handleAction(accountActions.getAverageMoviesRatingSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    averageMoviesRating: action.payload.rating
   }))
   .handleAction(accountActions.getAccountMoviesSuccess, (state, action) => ({
     ...state,

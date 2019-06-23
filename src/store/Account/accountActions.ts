@@ -18,5 +18,9 @@ export const accountActions = {
     action => (page: number, type: AccountMediaType) => action({ page, type })),
   getAccountShowsSuccess: createAction('GET_ACCOUNT_SHOWS_SUCCESS',
     action => (type: AccountMediaType, shows: TvShow[]) => action({ type, shows })),
-  getAccountShowsFailed: createAction('GET_ACCOUNT_SHOWS_FAILED', action => action)
+  getAccountShowsFailed: createAction('GET_ACCOUNT_SHOWS_FAILED', action => action),
+  getAverageMoviesRating: createAction('GET_AVERAGE_MOVIES_RATING', action => action),
+  getAverageMoviesRatingSuccess: createAction('GET_AVERAGE_MOVIES_RATING_SUCCESS',
+    action => (rating: number) => action({ rating })),
+  getAverageMoviesRatingFailed: createAction('GET_AVERAGE_MOVIES_RATING_FAILED', action => action)
 };

@@ -4,7 +4,8 @@ import { accountActions } from '@store/Account/accountActions';
 import { AccountActions } from '@store/Account/accountReducer';
 import { AppState } from '@store/configureStore';
 import { ActionsObservable, StateObservable } from 'redux-observable';
-import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { catchError, filter, map, pluck, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
@@ -18,7 +19,7 @@ const getAccountDetailEpic = (
   switchMap(([_, state]) => {
     return from(getAccountDetail((state.authState.session as Session).session_id)).pipe(
       map(account => {
-        account.avatar_url = `https://www.gravatar.com/avatar/${ account.avatar.gravatar.hash }`;
+        account.avatar_url = `https://www.gravatar.com/avatar/${ account.avatar.gravatar.hash }.jpg?s=200`;
         return accountActions.getAccountDetailSuccess(account);
       }),
       catchError(err => of(accountActions.getAccountDetailFailed(err)))
@@ -37,7 +38,7 @@ const getAccountMoviesEpic = (
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
     return from(getAccountMedias<Movie>(accountId, sessionId, 'movies', type, page)).pipe(
-      map(movies => accountActions.getAccountMoviesSuccess(type, movies)),
+      map(movies => accountActions.getAccountMoviesSuccess(type, movies.results)),
       catchError(() => of(accountActions.getAccountMoviesFailed()))
     );
   })
@@ -54,10 +55,64 @@ const getAccountShowsEpic = (
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
     return from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', type, page)).pipe(
-      map(shows => accountActions.getAccountShowsSuccess(type, shows)),
+      map(shows => accountActions.getAccountShowsSuccess(type, shows.results)),
       catchError(() => of(accountActions.getAccountShowsFailed()))
     );
   })
 );
 
-export const accountEpics = [getAccountDetailEpic, getAccountMoviesEpic, getAccountShowsEpic];
+const getAverageMoviesRatingEpic = (
+  action$: ActionsObservable<AccountActions>,
+  state$: StateObservable<AppState>
+) => {
+  let accountId: number;
+  let sessionId: string;
+  let flattenRatings: number[] = [];
+  return action$.pipe(
+    filter(isActionOf(accountActions.getAverageMoviesRating)),
+    withLatestFrom(state$),
+    switchMap(([_, state]) => {
+      accountId = (state.accountState.account as Account).id;
+      sessionId = (state.authState.session as Session).session_id;
+      return from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'rated')).pipe(
+        tap(result => {
+          flattenRatings.push(...result.results.map(r => r.rating));
+        }),
+        pluck('total_pages')
+      );
+    }),
+    switchMap(pages => {
+      const ratedMoviesFetched = [];
+
+      if (pages < 2) {
+        const average = flattenRatings.reduce((avg, cur) => avg + cur) / flattenRatings.length;
+        return of(accountActions.getAverageMoviesRatingSuccess(average));
+      }
+
+      for (let i = 2; i <= pages; i++) {
+        ratedMoviesFetched.push(
+          from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'rated', i)).pipe(
+            pluck('results'),
+            map(results => results.map(r => r.rating))
+          )
+        );
+      }
+
+      return forkJoin(ratedMoviesFetched).pipe(
+        map(ratings => {
+          flattenRatings = flattenRatings.concat(...ratings);
+          return flattenRatings.reduce((avg, cur) => avg + cur) / flattenRatings.length;
+        }),
+        map(average => accountActions.getAverageMoviesRatingSuccess(average)),
+        catchError(() => of(accountActions.getAverageMoviesRatingFailed()))
+      );
+    })
+  );
+};
+
+export const accountEpics = [
+  getAccountDetailEpic,
+  getAccountMoviesEpic,
+  getAccountShowsEpic,
+  getAverageMoviesRatingEpic
+];
