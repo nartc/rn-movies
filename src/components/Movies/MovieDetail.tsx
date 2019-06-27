@@ -11,7 +11,7 @@ import MediaDetailSection from '@ui/MediaDetail/MediaDetailSection';
 import MediaDetailTitle from '@ui/MediaDetail/MediaDetailTitle';
 import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import { StackScreenComponent } from '@utils/types';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Animated, FlatList, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import { MovieDetailModalScreenProps } from '@screens/Movies/MovieDetailModalScreen';
@@ -28,7 +28,8 @@ const MovieDetail: StackScreenComponent<MovieDetailModalScreenProps> = (
     fetchMovieAccountStates,
     navigation
   }) => {
-  const { scrollYRef, animatedImageHeight, animatedImageTranslateY, animatedImageOpacity, animatedHeaderOpacity, animatedTitle } = useDetailAnimations();
+  const loadingMovieIdRef = useRef(0);
+  const { scrollYRef, animatedImageOpacity, animatedHeaderOpacity, animatedTitle, headerTranslate } = useDetailAnimations();
   useFetchWithParam(id, fetchMovieById);
   useFetchWithParam(id, fetchMovieAccountStates);
 
@@ -37,25 +38,28 @@ const MovieDetail: StackScreenComponent<MovieDetailModalScreenProps> = (
       && (v.type === VideoType.Trailer || v.type === VideoType.Teaser));
 
   const onRecommendationPress = useCallback((movie: Movie) => {
+    loadingMovieIdRef.current = movie.id;
     navigation.replace('MovieDetails', { id: movie.id });
   }, []);
 
-  return isLoading || !movie ? (
-    <MediaDetailLoading/>
-  ) : (
+  return isLoading || !movie || (movie && loadingMovieIdRef.current && movie.id !== loadingMovieIdRef.current)
+         ? (
+           <MediaDetailLoading/>
+         )
+         : (
            <View style={ { flex: 1 } }>
-             <MediaDetailHeader animatedImageHeight={ animatedImageHeight }
-                                animatedImageTranslateY={ animatedImageTranslateY }
-                                animatedImageOpacity={ animatedImageOpacity }
+             <MediaDetailHeader animatedImageOpacity={ animatedImageOpacity }
                                 animatedHeaderOpacity={ animatedHeaderOpacity }
                                 animatedTitle={ animatedTitle }
+                                headerTranslate={ headerTranslate }
                                 headerText={ movie.title }
                                 headerImage={ movie.images.posters[movie.images.posters.length - 1].file_path }
                                 onPop={ () => navigation.pop() }/>
              <Animated.ScrollView style={ { flex: 1 } }
-                                  scrollEventThrottle={ 16 }
-                                  onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }]) }>
-               <View style={ { flex: 1, paddingHorizontal: 10 } }>
+                                  scrollEventThrottle={ 1 }
+                                  onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }],
+                                    { useNativeDriver: true }) }>
+               <View style={ { flex: 1, paddingHorizontal: 10, marginTop: 555 } }>
                  <MediaDetailTitle title={ movie.title }
                                    overview={ movie.overview }
                                    genres={ movie.genre_names as string[] }

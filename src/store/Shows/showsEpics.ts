@@ -1,8 +1,14 @@
-import { TvShow, TvShowDetail } from '@api/Models';
-import { getShowByid, getShows } from '@api/Shows';
+import { Session, TvShow, TvShowDetail } from '@api/Models';
+import { getShowAccountStates, getShowByid, getShows } from '@api/Shows';
 import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
-import { FETCH_SHOW, FETCH_SHOWS, FETCH_SHOWS_BY_PAGE, showsActions } from '@store/Shows/showsActions';
+import {
+  FETCH_SHOW,
+  FETCH_SHOW_ACCOUNT_STATES,
+  FETCH_SHOWS,
+  FETCH_SHOWS_BY_PAGE,
+  showsActions
+} from '@store/Shows/showsActions';
 import { ShowsActions } from '@store/Shows/showsReducer';
 import { ActionsObservable, StateObservable } from 'redux-observable';
 import { from, of } from 'rxjs';
@@ -106,4 +112,18 @@ const mapConfigurationToShowDetail = (configuration: ConfigurationState) => (sho
   return show;
 };
 
-export const showsEpics = [fetchShowsEpic, fetchShowEpic, fetchShowsByPageEpic];
+const fetchShowAccountStatesEpic = (
+  action$: ActionsObservable<ShowsActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
+  filter(isOfType(FETCH_SHOW_ACCOUNT_STATES)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    return from(getShowAccountStates(action.payload.id, (state.authState.session as Session).session_id)).pipe(
+      map(accountState => showsActions.fetchShowAccountStatesSuccess(accountState)),
+      catchError(() => of(showsActions.fetchShowAccountStatesFailed()))
+    );
+  })
+);
+
+export const showsEpics = [fetchShowsEpic, fetchShowEpic, fetchShowsByPageEpic, fetchShowAccountStatesEpic];

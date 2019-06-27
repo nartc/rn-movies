@@ -1,4 +1,4 @@
-import { TvShow, TvShowDetail } from '@api/Models';
+import { AccountState, TvShow, TvShowDetail } from '@api/Models';
 import { showsActions } from '@store/Shows/showsActions';
 import { Reducer } from 'redux';
 import { ActionType } from 'typesafe-actions';
@@ -17,6 +17,7 @@ export type ShowsState = {
   filtered: {
     [type: string]: TvShow[]
   };
+  selectedShowAccountState: AccountState | null;
 };
 
 const initialState = {
@@ -27,11 +28,15 @@ const initialState = {
   airingTodays: [],
   selectedShow: null,
   searchShows: {},
-  filtered: {}
+  filtered: {},
+  selectedShowAccountState: null
 } as ShowsState;
 
 export const showsReducer: Reducer<ShowsState, ShowsActions> = (state = initialState, action) => {
   switch (action.type) {
+    case 'FETCH_SHOW_ACCOUNT_STATES_SUCCESS': {
+      return { ...state, isLoading: false, selectedShowAccountState: action.payload.accountState };
+    }
     case 'FETCH_SHOWS_BY_PAGE_SUCCESS': {
       const { type, shows } = action.payload;
       const searchShows = { ...state.searchShows, [type]: [...state.searchShows[type], ...shows] };
@@ -50,6 +55,7 @@ export const showsReducer: Reducer<ShowsState, ShowsActions> = (state = initialS
     }
     case 'FETCH_SHOW':
     case 'FETCH_SHOWS_BY_PAGE':
+    case 'FETCH_SHOW_ACCOUNT_STATES':
     case 'FETCH_SHOWS': {
       return { ...state, isLoading: true };
     }
@@ -72,6 +78,7 @@ export const showsReducer: Reducer<ShowsState, ShowsActions> = (state = initialS
       };
     }
     case 'FETCH_SHOW_FAILED':
+    case 'FETCH_SHOW_ACCOUNT_STATES_FAILED':
     case 'FETCH_SHOWS_BY_PAGE_FAILED':
     case 'FETCH_SHOWS_FAILED': {
       return { ...state, isLoading: false };

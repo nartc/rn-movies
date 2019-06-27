@@ -15,7 +15,8 @@ const mapStateToProps = (state: AppState, ownProps: StackScreenProps<{ id: numbe
 };
 
 const mapDispatchToProps = {
-  fetchShowById: showsActions.fetchShow
+  fetchShowById: showsActions.fetchShow,
+  fetchShowAccountStates: showsActions.fetchShowAccountStates
 };
 
 export type ShowDetailModalScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;

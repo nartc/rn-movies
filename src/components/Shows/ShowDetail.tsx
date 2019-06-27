@@ -12,7 +12,7 @@ import MediaDetailSection from '@ui/MediaDetail/MediaDetailSection';
 import MediaDetailTitle from '@ui/MediaDetail/MediaDetailTitle';
 import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import { StackScreenComponent } from '@utils/types';
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Animated, FlatList, View } from 'react-native';
 import { Image, Text } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
@@ -24,27 +24,30 @@ const ShowDetail: StackScreenComponent<ShowDetailModalScreenProps> = (
     show,
     id,
     fetchShowById,
+    fetchShowAccountStates,
     navigation
   }) => {
-  const { scrollYRef, animatedImageHeight, animatedImageTranslateY, animatedImageOpacity, animatedHeaderOpacity, animatedTitle } = useDetailAnimations();
+  const { scrollYRef, headerTranslate, animatedImageOpacity, animatedHeaderOpacity, animatedTitle } = useDetailAnimations();
+  const loadingShowIdRef = useRef(0);
   useFetchWithParam(id, fetchShowById);
+  useFetchWithParam(id, fetchShowAccountStates);
 
   const trailer = show
     && show.videos.results.find(v => v.site === VideoSite.Youtube
       && (v.type === VideoType.Trailer || v.type === VideoType.Teaser));
 
   const onRecommendationPress = useCallback((item: TvShow) => {
+    loadingShowIdRef.current = item.id;
     navigation.replace('ShowDetails', { id: item.id });
   }, []);
 
-  return isLoading || !show
+  return isLoading || !show || (show && loadingShowIdRef.current && show.id !== loadingShowIdRef.current)
          ? (
            <MediaDetailLoading/>
          )
          : (
            <View style={ { flex: 1 } }>
-             <MediaDetailHeader animatedImageHeight={ animatedImageHeight }
-                                animatedImageTranslateY={ animatedImageTranslateY }
+             <MediaDetailHeader headerTranslate={ headerTranslate }
                                 animatedImageOpacity={ animatedImageOpacity }
                                 animatedHeaderOpacity={ animatedHeaderOpacity }
                                 animatedTitle={ animatedTitle }
@@ -52,9 +55,10 @@ const ShowDetail: StackScreenComponent<ShowDetailModalScreenProps> = (
                                 headerImage={ show.images.posters[show.images.posters.length - 1].file_path }
                                 onPop={ () => navigation.pop() }/>
              <Animated.ScrollView style={ { flex: 1 } }
-                                  scrollEventThrottle={ 16 }
-                                  onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }]) }>
-               <View style={ { flex: 1, paddingHorizontal: 10 } }>
+                                  scrollEventThrottle={ 1 }
+                                  onScroll={ Animated.event([{ nativeEvent: { contentOffset: { y: scrollYRef.current } } }],
+                                    { useNativeDriver: true }) }>
+               <View style={ { flex: 1, paddingHorizontal: 10, marginTop: 555 } }>
                  <MediaDetailTitle title={ show.name }
                                    overview={ show.overview }
                                    genres={ show.genre_names as string[] }

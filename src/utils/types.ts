@@ -9,4 +9,4 @@ export type StackScreenComponent<TProps = {}, TParams = {}> = NavigationScreenCo
   TProps>;
 
 export type Merge<M, N> = Omit<M, Extract<keyof M, keyof N>> & N;
-export type AnimatedComponent<T, N> = ComponentType<Merge<T, N>>;
+export type AnimatedComponent<T, N = {}> = ComponentType<Merge<T, N>>;

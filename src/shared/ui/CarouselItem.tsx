@@ -1,4 +1,5 @@
 import React, { FC, memo } from 'react';
+import FastImage from 'react-native-fast-image';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { View, Platform, StyleSheet } from 'react-native';
 import { colors } from '@styles/Colors';
@@ -23,20 +24,20 @@ const CarouselItem: FC<CarouselItemProps> = memo(
       <TouchableWithoutFeedback onPress={ () => onItemTouched(id) }>
         <View style={ styles.carouselItemWrapper }>
           <View style={ styles.carouselItem }>
-            <Image
-              source={ { uri: backdropPath } }
-              resizeMode={ 'cover' }
-              containerStyle={ styles.flexed }
-              style={ styles.carouselItemImage }
-              placeholderStyle={ { backgroundColor: colors.default } }
-              PlaceholderContent={
-                <Spinner
-                  isVisible={ true }
-                  type={ Platform.OS === 'ios' ? 'Wave' : '9CubeGrid' }
-                  size={ 20 }
-                  color={ colors.primary }
-                />
-              }
+            <Image source={ { uri: backdropPath } }
+                   ImageComponent={ FastImage }
+                   resizeMode={ 'cover' }
+                   containerStyle={ styles.flexed }
+                   style={ styles.carouselItemImage }
+                   placeholderStyle={ { backgroundColor: colors.default } }
+                   PlaceholderContent={
+                     <Spinner
+                       isVisible={ true }
+                       type={ Platform.OS === 'ios' ? 'Wave' : '9CubeGrid' }
+                       size={ 20 }
+                       color={ colors.primary }
+                     />
+                   }
             />
           </View>
           <View style={ styles.carouselBottomTextContainer }>
