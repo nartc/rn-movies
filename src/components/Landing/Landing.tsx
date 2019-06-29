@@ -39,7 +39,7 @@ const Landing: StackScreenComponent<LandingScreenProps> = (
         requestToken();
       }
     }).catch(err => {
-      console.log(err);
+      console.error(err);
     });
   }, []);
 
@@ -55,8 +55,6 @@ const Landing: StackScreenComponent<LandingScreenProps> = (
       createSession();
     }
   };
-
-  console.log({ sessionErr });
 
   return !token || isLoading ? (
     <CenterView>

@@ -13,10 +13,7 @@ const fetchConfigurationEpic = (action$: ActionsObservable<ConfigurationActions>
   switchMap(() => {
     return from(getConfiguration()).pipe(
       map(configuration => configurationActions.fetchConfigurationSuccess(configuration)),
-      catchError((err: any) => {
-        console.log(err);
-        return of(configurationActions.fetchConfigurationFailed());
-      })
+      catchError(() => of(configurationActions.fetchConfigurationFailed()))
     );
   })
 );
