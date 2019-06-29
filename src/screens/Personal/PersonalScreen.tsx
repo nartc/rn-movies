@@ -6,14 +6,22 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 const mapStateToProps = (state: AppState) => {
-  const { account, isLoading, averageMoviesRating } = state.accountState;
-  return { isLoading, account: account as Account, averageMoviesRating };
+  const { account, isLoading, averageMoviesRating, averageShowsRating, watchlistCount, favoritesCount, ratedCount } = state.accountState;
+  return {
+    isLoading,
+    account: account as Account,
+    averageMoviesRating,
+    averageShowsRating,
+    watchlistCount,
+    favoritesCount,
+    ratedCount
+  };
 };
 
 const mapDispatchToProps = {
-  getAccountMovies: accountActions.getAccountMovies,
-  getAccountShows: accountActions.getAccountShows,
-  getAverageMoviesRating: accountActions.getAverageMoviesRating
+  getAverageShowsRating: accountActions.getAverageShowsRating,
+  getAverageMoviesRating: accountActions.getAverageMoviesRating,
+  getAccountMediaCount: accountActions.getAccountMediaCount
 };
 
 export type PersonalScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;

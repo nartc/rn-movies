@@ -61,6 +61,40 @@ const getAccountShowsEpic = (
   })
 );
 
+const getAccountMediaCount = (
+  action$: ActionsObservable<AccountActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
+  filter(isActionOf(accountActions.getAccountMediaCount)),
+  withLatestFrom(state$),
+  switchMap(([, state]) => {
+    const accountId = (state.accountState.account as Account).id;
+    const sessionId = (state.authState.session as Session).session_id;
+    const fetches = [
+      from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', 'watchlist')).pipe(pluck('total_results')),
+      from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', 'favorite')).pipe(pluck('total_results')),
+      from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', 'rated')).pipe(pluck('total_results')),
+      from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'watchlist')).pipe(pluck('total_results')),
+      from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'favorite')).pipe(pluck('total_results')),
+      from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'rated')).pipe(pluck('total_results')),
+    ];
+
+    return forkJoin(fetches).pipe(
+      map(([watchlistTv, favTv, ratedTv, watchlistMovies, favMovies, ratedMovies]) => {
+        return {
+          watchlist: watchlistTv + watchlistMovies,
+          favorites: favTv + favMovies,
+          ratings: ratedTv + ratedMovies
+        };
+      }),
+      map(({ watchlist, favorites, ratings }) => accountActions.getAccountMediaCountSuccess(watchlist,
+        favorites,
+        ratings)),
+      catchError(() => of(accountActions.getAccountMediaCountFailed()))
+    );
+  })
+);
+
 const getAverageMoviesRatingEpic = (
   action$: ActionsObservable<AccountActions>,
   state$: StateObservable<AppState>
@@ -111,9 +145,61 @@ const getAverageMoviesRatingEpic = (
   );
 };
 
+const getAverageShowsRatingEpic = (
+  action$: ActionsObservable<AccountActions>,
+  state$: StateObservable<AppState>
+) => {
+  let accountId: number;
+  let sessionId: string;
+  let flattenRatings: number[] = [];
+  return action$.pipe(
+    filter(isActionOf(accountActions.getAverageShowsRating)),
+    withLatestFrom(state$),
+    switchMap(([_, state]) => {
+      accountId = (state.accountState.account as Account).id;
+      sessionId = (state.authState.session as Session).session_id;
+      return from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', 'rated')).pipe(
+        tap(result => {
+          flattenRatings.push(...result.results.map(r => r.rating));
+        }),
+        pluck('total_pages')
+      );
+    }),
+    switchMap(pages => {
+      const ratedMoviesFetched = [];
+      const getAverage = (arr: number[]) => arr.reduce((avg, cur) => avg + cur) / arr.length;
+
+      if (pages < 2) {
+        const average = getAverage(flattenRatings);
+        return of(accountActions.getAverageShowsRatingSuccess(average));
+      }
+
+      for (let i = 2; i <= pages; i++) {
+        ratedMoviesFetched.push(
+          from(getAccountMedias<Movie>(accountId, sessionId, 'movies', 'rated', i)).pipe(
+            pluck('results'),
+            map(results => results.map(r => r.rating))
+          )
+        );
+      }
+
+      return forkJoin(ratedMoviesFetched).pipe(
+        map(ratings => {
+          flattenRatings = flattenRatings.concat(...ratings);
+          return getAverage(flattenRatings);
+        }),
+        map(average => accountActions.getAverageShowsRatingSuccess(average)),
+        catchError(() => of(accountActions.getAverageShowsRatingFailed()))
+      );
+    })
+  );
+};
+
 export const accountEpics = [
   getAccountDetailEpic,
   getAccountMoviesEpic,
   getAccountShowsEpic,
-  getAverageMoviesRatingEpic
+  getAverageMoviesRatingEpic,
+  getAverageShowsRatingEpic,
+  getAccountMediaCount
 ];

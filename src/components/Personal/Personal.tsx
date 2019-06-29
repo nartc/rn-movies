@@ -15,18 +15,28 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
     isLoading,
     account,
     averageMoviesRating,
+    averageShowsRating,
+    watchlistCount,
+    favoritesCount,
+    ratedCount,
     navigation,
-    getAccountMovies,
-    getAccountShows,
-    getAverageMoviesRating
+    getAverageShowsRating,
+    getAverageMoviesRating,
+    getAccountMediaCount
   }) => {
   const [progress, setProgress] = useState(new Animated.Value(0));
+  const [showsProgress, setShowsProgress] = useState(new Animated.Value(0));
 
   useFetch(getAverageMoviesRating);
+  useFetch(getAverageShowsRating);
+  useFetch(getAccountMediaCount);
 
   useEffect(() => {
-    Animated.timing(progress, { toValue: averageMoviesRating / 10, duration: 1000 }).start();
-  }, [averageMoviesRating]);
+    Animated.parallel([
+      Animated.timing(progress, { toValue: averageMoviesRating / 10, duration: 1000 }),
+      Animated.timing(showsProgress, { toValue: averageShowsRating / 10, duration: 1000 })
+    ], { stopTogether: true }).start();
+  }, [averageMoviesRating, averageShowsRating]);
 
   return (
     <SafeAreaView style={ { flex: 1 } }>
@@ -45,7 +55,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
           <Divider style={ { backgroundColor: colors.light } }/>
           <View style={ { flex: 1, flexDirection: 'row', marginTop: 10, marginBottom: 5 } }>
             <View style={ { flex: 1 } }>
-              <AnimatedProgressCircle progress={ progress }
+              <AnimatedProgressCircle progress={ showsProgress }
                                       progressColor={ colors.primary }
                                       style={ { height: 75, flex: 1 } }
                                       strokeWidth={ 2 }/>
@@ -59,7 +69,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                 alignItems: 'center'
               } }>
                 <Text h4 h4Style={ { color: colors.secondary, fontWeight: 'bold' } }>
-                  { averageMoviesRating.toFixed(1) }/10
+                  { averageShowsRating.toFixed(1) }/10
                 </Text>
               </View>
             </View>
@@ -106,7 +116,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     chevron
                     title={ 'Watchlist' }
                     titleStyle={ { fontSize: 14 } }
-                    subtitle={ '0 items' }
+                    subtitle={ `${ watchlistCount } items` }
                     subtitleStyle={ { color: colors.light, fontSize: 12 } }/>
           <ListItem containerStyle={ { backgroundColor: colors.default } }
                     bottomDivider
@@ -119,7 +129,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     chevron
                     title={ 'Favorites' }
                     titleStyle={ { fontSize: 14 } }
-                    subtitle={ '0 items' }
+                    subtitle={ `${ favoritesCount } items` }
                     subtitleStyle={ { color: colors.light, fontSize: 12 } }/>
           <ListItem containerStyle={ { backgroundColor: colors.default } }
                     bottomDivider
@@ -128,7 +138,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     chevron
                     title={ 'Ratings' }
                     titleStyle={ { fontSize: 14 } }
-                    subtitle={ '0 items' }
+                    subtitle={ `${ ratedCount } items` }
                     subtitleStyle={ { color: colors.light, fontSize: 12 } }/>
         </View>
 

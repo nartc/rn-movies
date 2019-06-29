@@ -22,5 +22,13 @@ export const accountActions = {
   getAverageMoviesRating: createAction('GET_AVERAGE_MOVIES_RATING', action => action),
   getAverageMoviesRatingSuccess: createAction('GET_AVERAGE_MOVIES_RATING_SUCCESS',
     action => (rating: number) => action({ rating })),
-  getAverageMoviesRatingFailed: createAction('GET_AVERAGE_MOVIES_RATING_FAILED', action => action)
+  getAverageMoviesRatingFailed: createAction('GET_AVERAGE_MOVIES_RATING_FAILED', action => action),
+  getAverageShowsRating: createAction('GET_AVERAGE_SHOWS_RATING', action => action),
+  getAverageShowsRatingSuccess: createAction('GET_AVERAGE_SHOWS_RATING_SUCCESS',
+    action => (rating: number) => action({ rating })),
+  getAverageShowsRatingFailed: createAction('GET_AVERAGE_SHOWS_RATING_FAILED', action => action),
+  getAccountMediaCount: createAction('GET_ACCOUNT_MEDIA_COUNT', action => action),
+  getAccountMediaCountSuccess: createAction('GET_ACCOUNT_MEDIA_COUNT_SUCCESS',
+    action => (watchlist: number, favorites: number, rated: number) => action({ watchlist, favorites, rated })),
+  getAccountMediaCountFailed: createAction('GET_ACCOUNT_MEDIA_COUNT_FAILED', action => action)
 };

@@ -15,6 +15,9 @@ export type AccountState = {
   watchlistShows: TvShow[];
   averageMoviesRating: number;
   averageShowsRating: number;
+  watchlistCount: number;
+  favoritesCount: number;
+  ratedCount: number;
 };
 
 const initialState = {
@@ -28,7 +31,10 @@ const initialState = {
   ratedShows: [],
   watchlistShows: [],
   averageMoviesRating: 0,
-  averageShowsRating: 0
+  averageShowsRating: 0,
+  watchlistCount: 0,
+  favoritesCount: 0,
+  ratedCount: 0
 } as AccountState;
 
 export const accountReducer = createReducer<AccountState, AccountActions>(initialState)
@@ -36,16 +42,32 @@ export const accountReducer = createReducer<AccountState, AccountActions>(initia
       accountActions.getAccountDetail,
       accountActions.getAccountMovies,
       accountActions.getAccountShows,
-      accountActions.getAverageMoviesRating
+      accountActions.getAverageMoviesRating,
+      accountActions.getAverageShowsRating,
+      accountActions.getAccountMediaCount
     ],
     state => ({ ...state, isLoading: true }))
   .handleAction([
     accountActions.getAccountMoviesFailed,
     accountActions.getAccountShowsFailed,
-    accountActions.getAverageMoviesRatingFailed
+    accountActions.getAverageMoviesRatingFailed,
+    accountActions.getAverageShowsRatingFailed,
+    accountActions.getAccountMediaCountFailed
   ], state => ({
     ...state,
     isLoading: false
+  }))
+  .handleAction(accountActions.getAccountMediaCountSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    watchlistCount: action.payload.watchlist,
+    favoritesCount: action.payload.favorites,
+    ratedCount: action.payload.rated
+  }))
+  .handleAction(accountActions.getAverageShowsRatingSuccess, (state, action) => ({
+    ...state,
+    isLoading: false,
+    averageShowsRating: action.payload.rating
   }))
   .handleAction(accountActions.getAverageMoviesRatingSuccess, (state, action) => ({
     ...state,

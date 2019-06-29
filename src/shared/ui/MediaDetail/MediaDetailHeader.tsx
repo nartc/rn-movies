@@ -109,39 +109,3 @@ const MediaDetailHeader: FC<MediaDetailHeaderProps> = memo((
 });
 
 export default MediaDetailHeader;
-
-
-/**
- * <Animated.View style={ {
-        height: animatedImageHeight,
-        opacity: animatedImageOpacity,
-        transform: [{ translateY: animatedImageTranslateY }]
-      } }>
- <Image source={ { uri: headerImage } }
- placeholderStyle={ styles.imagePlaceholder }
- style={ styles.image }
- PlaceholderContent={ <Spinner
-                 isVisible={ true }
-                 type={ Platform.OS === 'ios' ? 'Wave' : '9CubeGrid' }
-                 size={ 20 }
-                 color={ colors.primary }
-               /> }
- />
- </Animated.View>
- <Animated.View style={ {
-        ...styles.headerWrapper,
-        opacity: animatedHeaderOpacity
-      } }>
- <Animated.View style={ {
-          ...styles.headerTextWrapper,
-          opacity: animatedHeaderOpacity,
-          transform: [{ translateY: animatedTitle }]
-        } }>
- <Text h4 h4Style={ styles.headerText }>{ headerText }</Text>
- <Icon name={ 'keyboard-backspace' }
- type={ 'material-community' }
- color={ colors.secondary }
- onPress={ onPop }/>
- </Animated.View>
- </Animated.View>
- */

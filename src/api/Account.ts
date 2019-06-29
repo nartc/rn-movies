@@ -28,7 +28,8 @@ export const getAccountMedias = async <T>(
   const url = getUrl(`account/${ accountId }/${ type }/${ mediaType }`,
     getSessionIdParams(sessionId),
     `page=${ page }`);
-  const response = await client.get<{ total_pages: number, results: Array<T & { rating: number }> }>(url);
+  const response = await client.get<{ total_pages: number, total_results: number, results: Array<T & { rating: number }> }>(
+    url);
   return response.data;
 };
 
