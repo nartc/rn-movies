@@ -2,6 +2,7 @@ import AccountLandingScreen from '@screens/AccountLanding/AccountLandingScreen';
 import LandingScreen from '@screens/Landing/LandingScreen';
 import MovieDetailModalScreen from '@screens/Movies/MovieDetailModalScreen';
 import FilterMoviesScreen from '@screens/Movies/FilterMoviesScreen';
+import PersonalListScreen from '@screens/Personal/PersonalListScreen';
 import FilterShowsScreen from '@screens/Shows/FilterShowsScreen';
 import ShowDetailModalScreen from '@screens/Shows/ShowDetailModalScreen';
 import React from 'react';
@@ -48,14 +49,24 @@ const showsStack = createStackNavigator(
 
 const personalStack = createStackNavigator(
   {
-    Personal: PersonalScreen
+    Personal: PersonalScreen,
+    PersonalList: PersonalListScreen
   },
   {
     initialRouteName: 'Personal',
-    headerMode: 'none',
     cardStyle: {
       backgroundColor: colors.default
-    }
+    },
+    defaultNavigationOptions: () => ({
+      headerTitleStyle: {
+        fontSize: 20,
+        fontWeight: 'bold'
+      },
+      headerTintColor: colors.secondary,
+      headerStyle: {
+        backgroundColor: colors.default
+      }
+    })
   }
 );
 

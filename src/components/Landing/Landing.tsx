@@ -6,7 +6,7 @@ import { StackScreenComponent } from '@utils/types';
 import React, { useEffect } from 'react';
 import { NavState, SafeAreaView } from 'react-native';
 import Spinner from 'react-native-spinkit';
-import { Text } from 'react-native-elements';
+import { Button, Text } from 'react-native-elements';
 import WebView from 'react-native-webview';
 
 const Landing: StackScreenComponent<LandingScreenProps> = (
@@ -20,17 +20,26 @@ const Landing: StackScreenComponent<LandingScreenProps> = (
     isLoading,
     requestToken,
     isTokenApproved,
-    createSession
+    createSession,
+    hasSession,
+    sessionErr
   }) => {
+
+  useEffect(() => {
+    if (hasSession) {
+      navigation.navigate('AccountLandingStack');
+    }
+  }, [hasSession]);
 
   useEffect(() => {
     getSessionId().then(sessionId => {
       if (!!sessionId) {
         createSession();
-        navigation.navigate('AccountLandingStack');
       } else {
         requestToken();
       }
+    }).catch(err => {
+      console.log(err);
     });
   }, []);
 
@@ -44,14 +53,24 @@ const Landing: StackScreenComponent<LandingScreenProps> = (
   const onNavigationStateChange = (event: NavState) => {
     if (token && (event.url as string).indexOf(`${ token.request_token }/allow`) !== -1) {
       createSession();
-      navigation.navigate('AccountLandingStack');
     }
   };
 
+  console.log({ sessionErr });
+
   return !token || isLoading ? (
     <CenterView>
-      <Spinner isVisible={ true } color={ colors.primary }/>
-      <Text style={ { fontSize: 12, color: colors.secondary } }>Initializing...</Text>
+      { !!sessionErr ? (
+        <>
+          <Text style={ { fontSize: 12, color: colors.secondary } }>Error authenticating account</Text>
+          <Button title={ 'Retry' } onPress={ requestToken }/>
+        </>
+      ) : (
+          <>
+            <Spinner isVisible={ true } color={ colors.primary }/>
+            <Text style={ { fontSize: 12, color: colors.secondary } }>Initializing...</Text>
+          </>
+        ) }
     </CenterView>
   ) : token && !isTokenApproved
       ? (

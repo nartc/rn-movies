@@ -12,7 +12,9 @@ const mapStateToProps = (state: AppState) => ({
     !!Object.keys(state.configurationState.tvGenres).length,
   token: state.authState.token,
   isLoading: state.authState.isLoading,
-  isTokenApproved: state.authState.isApproved
+  isTokenApproved: state.authState.isApproved,
+  hasSession: !!state.authState.session,
+  sessionErr: state.authState.err
 });
 
 const mapDispatchToProps = {

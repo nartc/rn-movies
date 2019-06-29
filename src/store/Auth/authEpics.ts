@@ -34,13 +34,12 @@ export const createSessionEpic = (
 
         return from(createSessionId((state.authState.token as RequestToken).request_token)).pipe(
           tap(session => {
-            setSessionid(session.session_id);
+            if (session) {
+              setSessionid(session.session_id);
+            }
           }),
           map(session => authActions.createSessionSuccess(session)),
-          catchError(err => {
-            console.log(err);
-            return of(authActions.createSessionFailed(err.message || err.toString()));
-          })
+          catchError(err => of(authActions.createSessionFailed(err.message || err.toString())))
         );
       })
     );

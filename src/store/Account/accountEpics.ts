@@ -17,6 +17,7 @@ const getAccountDetailEpic = (
   filter(isActionOf(accountActions.getAccountDetail)),
   withLatestFrom(state$),
   switchMap(([_, state]) => {
+    console.log(state);
     return from(getAccountDetail((state.authState.session as Session).session_id)).pipe(
       map(account => {
         account.avatar_url = `https://www.gravatar.com/avatar/${ account.avatar.gravatar.hash }.jpg?s=200`;

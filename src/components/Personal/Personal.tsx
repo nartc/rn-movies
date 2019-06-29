@@ -1,7 +1,8 @@
+import { AccountMediaType } from '@api/Models';
 import { useFetch } from '@hooks/useFetch';
 import { PersonalScreenProps } from '@screens/Personal/PersonalScreen';
 import { AnimatedComponent, StackScreenComponent } from '@utils/types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Animated, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Avatar, Divider, ListItem, Button } from 'react-native-elements';
 import { colors } from '@styles/Colors';
@@ -24,8 +25,9 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
     getAverageMoviesRating,
     getAccountMediaCount
   }) => {
-  const [progress, setProgress] = useState(new Animated.Value(0));
-  const [showsProgress, setShowsProgress] = useState(new Animated.Value(0));
+
+  const movieProgress = useRef(new Animated.Value(0));
+  const showsProgress = useRef(new Animated.Value(0));
 
   useFetch(getAverageMoviesRating);
   useFetch(getAverageShowsRating);
@@ -33,14 +35,18 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(progress, { toValue: averageMoviesRating / 10, duration: 1000 }),
-      Animated.timing(showsProgress, { toValue: averageShowsRating / 10, duration: 1000 })
+      Animated.timing(movieProgress.current, { toValue: averageMoviesRating / 10, duration: 1000 }),
+      Animated.timing(showsProgress.current, { toValue: averageShowsRating / 10, duration: 1000 })
     ], { stopTogether: true }).start();
   }, [averageMoviesRating, averageShowsRating]);
 
+  const onListPress = (title: string, type: AccountMediaType) => () => {
+    navigation.navigate('PersonalList', { title, type });
+  };
+
   return (
     <SafeAreaView style={ { flex: 1 } }>
-      <ScrollView style={ { flex: 1, paddingHorizontal: 10 } }>
+      <ScrollView style={ { flex: 1, paddingHorizontal: 10, paddingTop: 10 } }>
 
         <View style={ { alignItems: 'center', marginBottom: 10 } }>
           <Avatar source={ { uri: account.avatar_url } }
@@ -55,7 +61,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
           <Divider style={ { backgroundColor: colors.light } }/>
           <View style={ { flex: 1, flexDirection: 'row', marginTop: 10, marginBottom: 5 } }>
             <View style={ { flex: 1 } }>
-              <AnimatedProgressCircle progress={ showsProgress }
+              <AnimatedProgressCircle progress={ showsProgress.current }
                                       progressColor={ colors.primary }
                                       style={ { height: 75, flex: 1 } }
                                       strokeWidth={ 2 }/>
@@ -75,7 +81,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
             </View>
             <View style={ { width: 0.5, backgroundColor: colors.light } }/>
             <View style={ { flex: 1 } }>
-              <AnimatedProgressCircle progress={ progress }
+              <AnimatedProgressCircle progress={ movieProgress.current }
                                       progressColor={ colors.primary }
                                       style={ { height: 75, flex: 1 } }
                                       strokeWidth={ 2 }/>
@@ -106,6 +112,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
 
         <View style={ { marginVertical: 10 } }>
           <ListItem containerStyle={ { backgroundColor: colors.default } }
+                    onPress={ onListPress('Watchlist', 'watchlist') }
                     bottomDivider
                     topDivider
                     leftIcon={ {
@@ -119,6 +126,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     subtitle={ `${ watchlistCount } items` }
                     subtitleStyle={ { color: colors.light, fontSize: 12 } }/>
           <ListItem containerStyle={ { backgroundColor: colors.default } }
+                    onPress={ onListPress('Favorite', 'favorite') }
                     bottomDivider
                     topDivider
                     leftIcon={ {
@@ -132,6 +140,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     subtitle={ `${ favoritesCount } items` }
                     subtitleStyle={ { color: colors.light, fontSize: 12 } }/>
           <ListItem containerStyle={ { backgroundColor: colors.default } }
+                    onPress={ onListPress('Rating', 'rated') }
                     bottomDivider
                     topDivider
                     leftIcon={ { name: 'star', type: 'material-community', iconStyle: { color: colors.secondary } } }
@@ -160,6 +169,10 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
       </ScrollView>
     </SafeAreaView>
   );
+};
+
+Personal.navigationOptions = {
+  title: 'Profile'
 };
 
 export default Personal;
