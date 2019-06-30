@@ -38,6 +38,11 @@ const getAccountMoviesEpic = (
     const { type, page } = action.payload;
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
+
+    if (page === 1 && !!(state.accountState as any)[`${ type }Movies`].length) {
+      return of(accountActions.getAccountMoviesSuccess(type, []));
+    }
+
     return from(getAccountMedias<Movie>(accountId, sessionId, 'movies', type, page)).pipe(
       map(movies => {
         movies.results = mapConfigurationToMovies(state.configurationState)(movies.results);
@@ -69,6 +74,11 @@ const getAccountShowsEpic = (
     const { type, page } = action.payload;
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
+
+    if (page === 1 && !!(state.accountState as any)[`${ type }Shows`].length) {
+      return of(accountActions.getAccountShowsSuccess(type, []));
+    }
+
     return from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', type, page)).pipe(
       map(shows => {
         shows.results = mapConfigurationToShows(state.configurationState)(shows.results);

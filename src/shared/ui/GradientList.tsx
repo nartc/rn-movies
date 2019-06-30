@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
 });
 
 const GradientList: FC<GradientListProps> = ({ onItemPress, isLoading, data, currentPage, onEndReached }) => {
-  const renderMovieItem = (item: { item: Movie | TvShow, index: number }) => {
+  const renderItem = (item: { item: Movie | TvShow, index: number }) => {
     const title = (item.item as Movie).title || (item.item as TvShow).name;
     const subtitle = (item.item.genre_names as string[]).join(', ');
 
@@ -44,7 +44,7 @@ const GradientList: FC<GradientListProps> = ({ onItemPress, isLoading, data, cur
       <GradientListItem leftAvatar={ {
         ImageComponent: FastImage as any,
         source: { uri: item.item.poster_path },
-        icon: { name: 'image', type: 'material-community' }
+        icon: { name: 'image' }
       } }
                         linearGradientProps={ {
                           colors: ['#232526', '#414345'],
@@ -71,7 +71,7 @@ const GradientList: FC<GradientListProps> = ({ onItemPress, isLoading, data, cur
               extraData={ currentPage }
               ListFooterComponent={ renderFooter }
               ListEmptyComponent={ <CenterView><Text>No items</Text></CenterView> }
-              renderItem={ renderMovieItem }
+              renderItem={ renderItem }
               keyExtractor={ item => item.id.toString() }
               showsHorizontalScrollIndicator={ false }
               scrollEventThrottle={ 16 }

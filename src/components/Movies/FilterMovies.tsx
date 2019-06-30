@@ -30,7 +30,7 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
     if (page > 1) {
       fetchMoviesByPage(movieType, page);
     }
-  }, [page]);
+  }, [page, movieType]);
 
   const onSearchQueryChanged = useCallback((query: string) => {
     filterMovies(movieType, query);
@@ -73,7 +73,6 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
       <GradientList isLoading={ isLoading }
                     onItemPress={ onItemPressed }
                     data={ movies }
-                    mediaType={ movieType }
                     currentPage={ page }
                     onEndReached={ onEndReachedHandler }/>
     </SafeAreaView>

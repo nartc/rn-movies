@@ -52,9 +52,9 @@ const TopSearchBar: FC<TopSearchBarProps> = memo(({ mediaType, onQueryChanged, s
                inputContainerStyle={ styles.searchBarInputContainer }
                inputStyle={ styles.searchBarInput }
                cancelButtonProps={ { color: colors.primary } }
-               clearIcon={ { color: colors.secondary, name: 'close', type: 'material-community' } }
-               cancelIcon={ { color: colors.secondary, name: 'arrow-left', type: 'material-community' } }
-               searchIcon={ { color: colors.secondary, name: 'magnify', type: 'material-community' } }/>
+               clearIcon={ { color: colors.secondary, name: 'close' } }
+               cancelIcon={ { color: colors.secondary, name: 'arrow-left' } }
+               searchIcon={ { color: colors.secondary, name: 'magnify' } }/>
   );
 });
 

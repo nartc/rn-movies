@@ -95,6 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion "28.0.3"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -107,6 +108,8 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        renderscriptTargetApi 23
+        renderscriptSupportModeEnabled true
     }
     splits {
         abi {
@@ -138,6 +141,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_blur')
     implementation project(':react-native-fast-image')
     implementation project(':react-native-svg')
     implementation project(':react-native-webview')

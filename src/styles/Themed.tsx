@@ -26,6 +26,9 @@ const theme: Theme = {
     containerStyle: {
       backgroundColor: colors.secondary
     }
+  },
+  Icon: {
+    type: 'material-community'
   }
 };
 

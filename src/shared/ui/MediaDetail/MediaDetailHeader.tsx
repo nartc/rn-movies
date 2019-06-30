@@ -99,7 +99,6 @@ const MediaDetailHeader: FC<MediaDetailHeaderProps> = memo((
         } }>
           <Text h4 h4Style={ styles.headerText }>{ headerText }</Text>
           <Icon name={ 'keyboard-backspace' }
-                type={ 'material-community' }
                 color={ colors.secondary }
                 onPress={ onPop }/>
         </Animated.View>

@@ -1,3 +1,4 @@
+import { AccountState } from '@api/Models';
 import { colors } from '@styles/Colors';
 import React, { FC, memo } from 'react';
 import { StyleSheet, View } from 'react-native';

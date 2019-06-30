@@ -4,6 +4,7 @@ import { StackScreenComponent } from '@utils/types';
 import React, { useCallback } from 'react';
 import { MoviesScreenProps } from '@screens/Movies/MoviesScreen';
 import MediaContainer from '@ui/MediaContainer';
+import { NavigationEventPayload, NavigationEvents } from 'react-navigation';
 
 const Movies: StackScreenComponent<MoviesScreenProps> = (
   {

@@ -3,7 +3,7 @@ import { useFetch } from '@hooks/useFetch';
 import { PersonalScreenProps } from '@screens/Personal/PersonalScreen';
 import { AnimatedComponent, StackScreenComponent } from '@utils/types';
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated, SafeAreaView, ScrollView, View } from 'react-native';
+import { Alert, Animated, SafeAreaView, ScrollView, View } from 'react-native';
 import { Text, Avatar, Divider, ListItem, Button } from 'react-native-elements';
 import { colors } from '@styles/Colors';
 import { ProgressCircle, ProgressCircleProps } from 'react-native-svg-charts';
@@ -115,11 +115,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     onPress={ onListPress('Watchlist', 'watchlist') }
                     bottomDivider
                     topDivider
-                    leftIcon={ {
-                      name: 'television',
-                      type: 'material-community',
-                      iconStyle: { color: colors.secondary }
-                    } }
+                    leftIcon={ { name: 'television', iconStyle: { color: colors.secondary } } }
                     chevron
                     title={ 'Watchlist' }
                     titleStyle={ { fontSize: 14 } }
@@ -129,11 +125,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     onPress={ onListPress('Favorite', 'favorite') }
                     bottomDivider
                     topDivider
-                    leftIcon={ {
-                      name: 'heart-outline',
-                      type: 'material-community',
-                      iconStyle: { color: colors.secondary }
-                    } }
+                    leftIcon={ { name: 'heart-outline', iconStyle: { color: colors.secondary } } }
                     chevron
                     title={ 'Favorites' }
                     titleStyle={ { fontSize: 14 } }
@@ -143,7 +135,7 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     onPress={ onListPress('Rating', 'rated') }
                     bottomDivider
                     topDivider
-                    leftIcon={ { name: 'star', type: 'material-community', iconStyle: { color: colors.secondary } } }
+                    leftIcon={ { name: 'star', iconStyle: { color: colors.secondary } } }
                     chevron
                     title={ 'Ratings' }
                     titleStyle={ { fontSize: 14 } }
@@ -158,8 +150,9 @@ const Personal: StackScreenComponent<PersonalScreenProps> = (
                     title={ 'New playlist' }
                     buttonStyle={ { backgroundColor: colors.default, paddingBottom: 0 } }
                     titleStyle={ { color: colors.primary } }
-                    icon={ { name: 'playlist-plus', type: 'material-community', color: colors.primary } }
+                    icon={ { name: 'playlist-plus', color: colors.primary } }
                     onPress={ () => {
+                      Alert.alert('Info', 'This feature is coming soon');
                     } }/>
           </View>
           <Divider style={ { backgroundColor: colors.light } }/>

@@ -88,14 +88,14 @@ const mainTabNavigator = createBottomTabNavigator(
     MoviesStack: {
       screen: moviesStack,
       navigationOptions: {
-        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" type={ 'material-community' } color={ tintColor }/>
+        tabBarIcon: ({ tintColor }: any) => <Icon name="movie-roll" color={ tintColor }/>
       }
     },
     ShowsStack: {
       screen: showsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="television-classic" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="television-classic" color={ tintColor }/>
         )
       }
     },
@@ -103,7 +103,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: personalStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="account-outline" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="account-outline" color={ tintColor }/>
         )
       }
     },
@@ -111,7 +111,7 @@ const mainTabNavigator = createBottomTabNavigator(
       screen: settingsStack,
       navigationOptions: {
         tabBarIcon: ({ tintColor }: any) => (
-          <Icon name="settings-outline" type={ 'material-community' } color={ tintColor }/>
+          <Icon name="settings-outline" color={ tintColor }/>
         )
       }
     }
@@ -149,7 +149,7 @@ const accountLandingStack = createStackNavigator({
 const appStack = createStackNavigator({
   MainTab: mainTabNavigator,
   MovieDetails: MovieDetailModalScreen,
-  ShowDetails: ShowDetailModalScreen
+  ShowDetails: ShowDetailModalScreen,
 }, {
   mode: 'modal',
   initialRouteName: 'MainTab',
