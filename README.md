@@ -35,6 +35,7 @@ As any other RN application on Github, what you need to do:
 - [ ] CRUD Playlist
 - [ ] Implement Settings screen
 - [ ] Some specific settings that I can't think of at the moment
+- [ ] Implement Snackbar
 
 ## Screenshots
 
