@@ -2,6 +2,7 @@ import { getAccountDetail, getAccountMedias } from '@api/Account';
 import { Session, Movie, Account, TvShow } from '@api/Models';
 import { accountActions } from '@store/Account/accountActions';
 import { AccountActions } from '@store/Account/accountReducer';
+import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
 import { ActionsObservable, StateObservable } from 'redux-observable';
 import { forkJoin } from 'rxjs';
@@ -38,11 +39,25 @@ const getAccountMoviesEpic = (
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
     return from(getAccountMedias<Movie>(accountId, sessionId, 'movies', type, page)).pipe(
-      map(movies => accountActions.getAccountMoviesSuccess(type, movies.results)),
+      map(movies => {
+        movies.results = mapConfigurationToMovies(state.configurationState)(movies.results);
+        return accountActions.getAccountMoviesSuccess(type, movies.results);
+      }),
       catchError(() => of(accountActions.getAccountMoviesFailed()))
     );
   })
 );
+
+const mapConfigurationToMovies = (configuration: ConfigurationState) => (movies: Array<Movie & { rating: number }>) => {
+  for (let i = 0, len = movies.length; i < len; i++) {
+    const movie = movies[i];
+    movie.genre_names = movie.genre_ids.map(id => configuration.movieGenres[id]);
+    movie.backdrop_path = `${ configuration.backdropPath }${ movie.backdrop_path }`;
+    movie.poster_path = `${ configuration.posterPath }${ movie.poster_path }`;
+  }
+
+  return movies;
+};
 
 const getAccountShowsEpic = (
   action$: ActionsObservable<AccountActions>,
@@ -55,11 +70,25 @@ const getAccountShowsEpic = (
     const accountId = (state.accountState.account as Account).id;
     const sessionId = (state.authState.session as Session).session_id;
     return from(getAccountMedias<TvShow>(accountId, sessionId, 'tv', type, page)).pipe(
-      map(shows => accountActions.getAccountShowsSuccess(type, shows.results)),
+      map(shows => {
+        shows.results = mapConfigurationToShows(state.configurationState)(shows.results);
+        return accountActions.getAccountShowsSuccess(type, shows.results);
+      }),
       catchError(() => of(accountActions.getAccountShowsFailed()))
     );
   })
 );
+
+const mapConfigurationToShows = (configuration: ConfigurationState) => (shows: Array<TvShow & { rating: number }>) => {
+  for (let i = 0, len = shows.length; i < len; i++) {
+    const show = shows[i];
+    show.genre_names = show.genre_ids.map(id => configuration.movieGenres[id]);
+    show.backdrop_path = `${ configuration.backdropPath }${ show.backdrop_path }`;
+    show.poster_path = `${ configuration.posterPath }${ show.poster_path }`;
+  }
+
+  return shows;
+};
 
 const getAccountMediaCount = (
   action$: ActionsObservable<AccountActions>,

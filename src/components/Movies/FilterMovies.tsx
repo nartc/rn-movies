@@ -1,52 +1,16 @@
-import { Movie } from '@api/Models';
-import { useDebounce } from '@hooks/useDebounce';
 import { FilterhMoviesScreenProps } from '@screens/Movies/FilterMoviesScreen';
 import { colors } from '@styles/Colors';
-import CenterView from '@ui/CenterView';
-import GradientListItem from '@ui/GradientListItem';
-import { movieTypesMap } from '@utils/constants';
+import GradientList from '@ui/GradientList';
+import TopSearchBar from '@ui/TopSearchBar';
 import { StackScreenComponent } from '@utils/types';
-import React, { useEffect, useRef, useState } from 'react';
-import { FlatList, Platform, SafeAreaView, StyleSheet } from 'react-native';
-import { Divider, SearchBar, Text } from 'react-native-elements';
-import Spinner from 'react-native-spinkit';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Platform, SafeAreaView, StyleSheet } from 'react-native';
+import { Divider } from 'react-native-elements';
 
 const styles = StyleSheet.create({
-  gradientContainer: {
-    backgroundColor: colors.default,
-    marginHorizontal: 10,
-    marginVertical: 5,
-    flex: 1,
-    padding: 10,
-    borderRadius: 10
-  },
-  gradientTitle: {
-    fontSize: 14
-  },
-  gradientSubTitle: {
-    fontWeight: 'bold',
-    color: colors.light,
-    fontSize: 10
-  },
   flexed: {
     flex: 1
   },
-  searchBarContainer: {
-    backgroundColor: colors.default
-  },
-  searchBarInputContainer: {
-    backgroundColor: colors.default,
-    borderWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.secondary,
-    borderTopColor: colors.secondary,
-    borderBottomColor: colors.secondary,
-    borderRadius: 20
-  },
-  searchBarInput: {
-    color: colors.secondary,
-    borderColor: colors.secondary
-  }
 });
 
 const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
@@ -59,9 +23,7 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
     filterMovies
   }) => {
   const [page, setPage] = useState(1);
-  const [isFiltering, setIsFiltering] = useState(false);
-  const [query, setQuery] = useState('');
-  const debouncedQuery = useDebounce(query);
+  const filteringRef = useRef(false);
   const firstLoadRef = useRef(false);
 
   useEffect(() => {
@@ -70,30 +32,20 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
     }
   }, [page]);
 
-  useEffect(() => {
-    filterMovies(movieType, debouncedQuery);
-  }, [debouncedQuery]);
+  const onSearchQueryChanged = useCallback((query: string) => {
+    filterMovies(movieType, query);
+  }, [filterMovies, movieType]);
 
-  const renderMovieItem = (item: { item: Movie, index: number }) => (
-    <GradientListItem leftAvatar={ {
-      source: { uri: item.item.poster_path },
-      icon: { name: 'image', type: 'material-community' }
-    } }
-                      linearGradientProps={ {
-                        colors: ['#232526', '#414345'],
-                        start: { x: 1, y: 0 },
-                        end: { x: 0, y: 0.2 },
-                      } }
-                      containerStyle={ styles.gradientContainer }
-                      title={ item.item.title }
-                      titleStyle={ styles.gradientTitle }
-                      subtitle={ (item.item.genre_names as string[]).join(', ') }
-                      subtitleStyle={ styles.gradientSubTitle }
-                      onPress={ () => navigation.navigate('MovieDetails', { id: item.item.id }) }/>
-  );
+  const onFiltering = useCallback((isFiltering: boolean) => {
+    filteringRef.current = isFiltering;
+  }, [filteringRef.current]);
+
+  const onItemPressed = useCallback((id: number) => {
+    navigation.navigate('MovieDetails', { id });
+  }, []);
 
   const onEndReachedHandlerAndroid = () => {
-    if (!isFiltering && !isLoading) {
+    if (!filteringRef.current && !isLoading) {
       setPage(page + 1);
     }
   };
@@ -104,46 +56,26 @@ const FilterMovies: StackScreenComponent<FilterhMoviesScreenProps> = (
       return;
     }
 
-    if (firstLoadRef.current && !isFiltering && !isLoading) {
+    if (firstLoadRef.current && !filteringRef.current && !isLoading) {
       setPage(page + 1);
     }
   };
 
-  const renderFooter = () => (
-    <CenterView>
-      <Spinner isVisible={ isLoading } type={ 'Bounce' } size={ 18 } color={ colors.primary }/>
-    </CenterView>
-  );
+  const onEndReachedHandler = Platform.select({
+    android: onEndReachedHandlerAndroid,
+    ios: onEndReachedHandlerIos
+  });
 
   return (
     <SafeAreaView style={ styles.flexed }>
-      <SearchBar platform={ Platform.OS === 'ios' ? 'ios' : 'android' }
-                 placeholder={ `Filter ${ movieTypesMap[movieType] }` }
-                 placeholderTextColor={ colors.secondary }
-                 value={ query }
-                 onChangeText={ text => {
-                   setIsFiltering(!!text);
-                   setQuery(text);
-                 } }
-                 containerStyle={ styles.searchBarContainer }
-                 inputContainerStyle={ styles.searchBarInputContainer }
-                 inputStyle={ styles.searchBarInput }
-                 cancelButtonProps={ { color: colors.primary } }
-                 clearIcon={ { color: colors.secondary, name: 'close', type: 'material-community' } }
-                 cancelIcon={ { color: colors.secondary, name: 'arrow-left', type: 'material-community' } }
-                 searchIcon={ { color: colors.secondary, name: 'magnify', type: 'material-community' } }/>
+      <TopSearchBar mediaType={ movieType } onQueryChanged={ onSearchQueryChanged } setIsFiltering={ onFiltering }/>
       <Divider style={ { backgroundColor: colors.light } }/>
-      <FlatList data={ movies }
-                key={ movieType }
-                extraData={ page }
-                ListFooterComponent={ renderFooter }
-                ListEmptyComponent={ <CenterView><Text>No movies</Text></CenterView> }
-                renderItem={ renderMovieItem }
-                keyExtractor={ item => item.id.toString() }
-                showsHorizontalScrollIndicator={ false }
-                scrollEventThrottle={ 16 }
-                onEndReached={ Platform.OS === 'ios' ? onEndReachedHandlerIos : onEndReachedHandlerAndroid }
-                onEndReachedThreshold={ 0.2 }/>
+      <GradientList isLoading={ isLoading }
+                    onItemPress={ onItemPressed }
+                    data={ movies }
+                    mediaType={ movieType }
+                    currentPage={ page }
+                    onEndReached={ onEndReachedHandler }/>
     </SafeAreaView>
   );
 };
