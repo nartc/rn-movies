@@ -12,7 +12,7 @@ import MediaDetailSection from '@ui/MediaDetail/MediaDetailSection';
 import MediaDetailTitle from '@ui/MediaDetail/MediaDetailTitle';
 import MediaTitleWithRating from '@ui/MediaTitleWithRating';
 import { StackScreenComponent } from '@utils/types';
-import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Animated, FlatList, LayoutChangeEvent, View, findNodeHandle } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import { Icon, Image, Text } from 'react-native-elements';
