@@ -1,12 +1,12 @@
 import { Session, TvShow, TvShowDetail } from '@api/Models';
-import { getShowAccountStates, getShowByid, getShows } from '@api/Shows';
+import { getShowAccountStates, getShowByid, getShows, rateShow } from '@api/Shows';
 import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
 import {
   FETCH_SHOW,
   FETCH_SHOW_ACCOUNT_STATES,
   FETCH_SHOWS,
-  FETCH_SHOWS_BY_PAGE,
+  FETCH_SHOWS_BY_PAGE, RATE_SHOW,
   showsActions
 } from '@store/Shows/showsActions';
 import { ShowsActions } from '@store/Shows/showsReducer';
@@ -126,4 +126,21 @@ const fetchShowAccountStatesEpic = (
   })
 );
 
-export const showsEpics = [fetchShowsEpic, fetchShowEpic, fetchShowsByPageEpic, fetchShowAccountStatesEpic];
+const rateShowEpic = (action$: ActionsObservable<ShowsActions>, state$: StateObservable<AppState>) => action$.pipe(
+  filter(isOfType(RATE_SHOW)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    const sessionId = (state.authState.session as Session).session_id;
+    return from(rateShow(action.payload.id, action.payload.rating, sessionId)).pipe(
+      map(() => showsActions.fetchShowAccountStates(action.payload.id))
+    );
+  })
+);
+
+export const showsEpics = [
+  fetchShowsEpic,
+  fetchShowEpic,
+  fetchShowsByPageEpic,
+  fetchShowAccountStatesEpic,
+  rateShowEpic
+];

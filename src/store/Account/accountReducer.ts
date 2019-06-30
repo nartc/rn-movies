@@ -44,7 +44,9 @@ export const accountReducer = createReducer<AccountState, AccountActions>(initia
       accountActions.getAccountShows,
       accountActions.getAverageMoviesRating,
       accountActions.getAverageShowsRating,
-      accountActions.getAccountMediaCount
+      accountActions.getAccountMediaCount,
+      accountActions.toggleFavorite,
+      accountActions.toggleWatchlist
     ],
     state => ({ ...state, isLoading: true }))
   .handleAction([

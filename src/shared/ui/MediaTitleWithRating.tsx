@@ -27,7 +27,7 @@ const MediaTitleWithRating: FC<MediaTitleWithRatingProps> = ({ rating, count, ti
   return (
     <>
       <View style={ styles.mediaContent }>
-        <StarRating rating={ (rating / 10) * 5 }
+        <StarRating rating={ rating / 2 }
                     starSize={ 12 }
                     fullStarColor={ colors.primary }
                     disabled

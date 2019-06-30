@@ -6,12 +6,12 @@ import {
   FETCH_MOVIE_ACCOUNT_STATES,
   FETCH_MOVIES,
   FETCH_MOVIES_BY_PAGE,
-  moviesActions
+  moviesActions, RATE_MOVIE
 } from '@store/Movies/moviesActions';
 import { MoviesActions } from '@store/Movies/moviesReducer';
 import { ActionsObservable, StateObservable } from 'redux-observable';
 import { switchMap, map, catchError, filter, withLatestFrom } from 'rxjs/operators';
-import { getMovies, getMovieById, getMovieAccountState } from '@api/Movies';
+import { getMovies, getMovieById, getMovieAccountState, rateMovie } from '@api/Movies';
 import { from } from 'rxjs/internal/observable/from';
 import { of } from 'rxjs/internal/observable/of';
 import { isOfType } from 'typesafe-actions';
@@ -126,4 +126,21 @@ const fetchMovieAccountStatesEpic = (
   })
 );
 
-export const moviesEpics = [fetchMoviesEpic, fetchMovieEpic, fetchMoviesByPageEpic, fetchMovieAccountStatesEpic];
+const rateMovieEpic = (action$: ActionsObservable<MoviesActions>, state$: StateObservable<AppState>) => action$.pipe(
+  filter(isOfType(RATE_MOVIE)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    const sessionId = (state.authState.session as Session).session_id;
+    return from(rateMovie(action.payload.id, action.payload.rating, sessionId)).pipe(
+      map(() => moviesActions.fetchMovieAccountStates(action.payload.id))
+    );
+  })
+);
+
+export const moviesEpics = [
+  fetchMoviesEpic,
+  fetchMovieEpic,
+  fetchMoviesByPageEpic,
+  fetchMovieAccountStatesEpic,
+  rateMovieEpic
+];

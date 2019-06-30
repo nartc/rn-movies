@@ -1,9 +1,4 @@
 import { AccountState, ShowEndpointsPath, TvShow, TvShowDetail } from '@api/Models';
-import {
-  FETCH_MOVIE_ACCOUNT_STATES,
-  FETCH_MOVIE_ACCOUNT_STATES_FAILED,
-  FETCH_MOVIE_ACCOUNT_STATES_SUCCESS
-} from '@store/Movies/moviesActions';
 import { action } from 'typesafe-actions';
 
 export const FETCH_SHOWS = 'FETCH_SHOWS';
@@ -19,6 +14,7 @@ export const FILTER_SHOWS = 'FILTER_SHOWS';
 export const FETCH_SHOW_ACCOUNT_STATES = 'FETCH_SHOW_ACCOUNT_STATES';
 export const FETCH_SHOW_ACCOUNT_STATES_SUCCESS = 'FETCH_SHOW_ACCOUNT_STATES_SUCCESS';
 export const FETCH_SHOW_ACCOUNT_STATES_FAILED = 'FETCH_SHOW_ACCOUNT_STATES_FAILED';
+export const RATE_SHOW = 'RATE_SHOW';
 
 export const showsActions = {
   fetchShows: () => action(FETCH_SHOWS),
@@ -42,5 +38,6 @@ export const showsActions = {
   fetchShowAccountStates: (id: number) => action(FETCH_SHOW_ACCOUNT_STATES, { id }),
   fetchShowAccountStatesSuccess: (accountState: AccountState) => action(FETCH_SHOW_ACCOUNT_STATES_SUCCESS,
     { accountState }),
-  fetchShowAccountStatesFailed: () => action(FETCH_SHOW_ACCOUNT_STATES_FAILED)
+  fetchShowAccountStatesFailed: () => action(FETCH_SHOW_ACCOUNT_STATES_FAILED),
+  rateShow: (id: number, rating: number) => action(RATE_SHOW, { id, rating })
 };

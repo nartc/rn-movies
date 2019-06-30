@@ -1,4 +1,4 @@
-import { Account, AccountMediaType, Movie, TvShow } from '@api/Models';
+import { Account, AccountMediaType, FavoriteParams, Movie, TvShow, WatchlistParams } from '@api/Models';
 import { createAction } from 'typesafe-actions';
 
 export const accountActions = {
@@ -30,5 +30,9 @@ export const accountActions = {
   getAccountMediaCount: createAction('GET_ACCOUNT_MEDIA_COUNT', action => action),
   getAccountMediaCountSuccess: createAction('GET_ACCOUNT_MEDIA_COUNT_SUCCESS',
     action => (watchlist: number, favorites: number, rated: number) => action({ watchlist, favorites, rated })),
-  getAccountMediaCountFailed: createAction('GET_ACCOUNT_MEDIA_COUNT_FAILED', action => action)
+  getAccountMediaCountFailed: createAction('GET_ACCOUNT_MEDIA_COUNT_FAILED', action => action),
+  toggleFavorite: createAction('TOGGLE_FAVORITE',
+    action => (favoriteParams: FavoriteParams) => action(favoriteParams)),
+  toggleWatchlist: createAction('TOGGLE_WATCHLIST',
+    action => (watchlistParams: WatchlistParams) => action(watchlistParams))
 };

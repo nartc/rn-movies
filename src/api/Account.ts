@@ -1,7 +1,5 @@
 import { getUrl, client } from './Axios';
-import { Account, WatchlistParams, FavoriteParams, AccountMediaType } from './Models';
-
-type AccountActionResponse = { status_code: number; status_message: string };
+import { Account, WatchlistParams, FavoriteParams, AccountMediaType, AccountActionResponse } from './Models';
 
 const getSessionIdParams = (sessionId: string) => `session_id=${ sessionId }`;
 

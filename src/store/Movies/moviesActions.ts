@@ -14,6 +14,7 @@ export const FILTER_MOVIES = 'FILTER_MOVIES';
 export const FETCH_MOVIE_ACCOUNT_STATES = 'FETCH_MOVIE_ACCOUNT_STATES';
 export const FETCH_MOVIE_ACCOUNT_STATES_SUCCESS = 'FETCH_MOVIE_ACCOUNT_STATES_SUCCESS';
 export const FETCH_MOVIE_ACCOUNT_STATES_FAILED = 'FETCH_MOVIE_ACCOUNT_STATES_FAILED';
+export const RATE_MOVIE = 'RATE_MOVIE';
 
 export const moviesActions = {
   fetchMovies: () => action(FETCH_MOVIES),
@@ -33,5 +34,6 @@ export const moviesActions = {
   fetchMovieAccountStates: (id: number) => action(FETCH_MOVIE_ACCOUNT_STATES, { id }),
   fetchMovieAccountStatesSuccess: (accountState: AccountState) => action(FETCH_MOVIE_ACCOUNT_STATES_SUCCESS,
     { accountState }),
-  fetchMovieAccountStatesFailed: () => action(FETCH_MOVIE_ACCOUNT_STATES_FAILED)
+  fetchMovieAccountStatesFailed: () => action(FETCH_MOVIE_ACCOUNT_STATES_FAILED),
+  rateMovie: (id: number, rating: number) => action(RATE_MOVIE, { id, rating })
 };

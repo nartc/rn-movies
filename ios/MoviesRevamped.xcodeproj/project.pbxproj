@@ -50,6 +50,7 @@
 		FDB03A9DBC5D49228E8DB2DC /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7D1D4513C9EF44C189655CAF /* AntDesign.ttf */; };
 		7179C8E0EA6B4049B8AFF501 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B5C9A0A0598842238421E853 /* libFastImage.a */; };
 		C7D4CF5B3F3F4770AA0F9702 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C790F07A1B184C429167B474 /* libRNBlur.a */; };
+		CF2C2E81256E45B6AC0CA080 /* libRNSnackbar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A5881C7BAEB64E54A5FB7F8C /* libRNSnackbar.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -476,6 +477,8 @@
 		B5C9A0A0598842238421E853 /* libFastImage.a */ = {isa = PBXFileReference; name = "libFastImage.a"; path = "libFastImage.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		F8704099F6EF4581924D2DF3 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; name = "RNBlur.xcodeproj"; path = "../node_modules/@react-native-community/blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		C790F07A1B184C429167B474 /* libRNBlur.a */ = {isa = PBXFileReference; name = "libRNBlur.a"; path = "libRNBlur.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		5795F93D17CA4649B6AE1ABF /* RNSnackbar.xcodeproj */ = {isa = PBXFileReference; name = "RNSnackbar.xcodeproj"; path = "../node_modules/react-native-snackbar/ios/RNSnackbar.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		A5881C7BAEB64E54A5FB7F8C /* libRNSnackbar.a */ = {isa = PBXFileReference; name = "libRNSnackbar.a"; path = "libRNSnackbar.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -514,6 +517,7 @@
 				CB42EAA044A94EA0B449E386 /* libRNSVG.a in Frameworks */,
 				7179C8E0EA6B4049B8AFF501 /* libFastImage.a in Frameworks */,
 				C7D4CF5B3F3F4770AA0F9702 /* libRNBlur.a in Frameworks */,
+				CF2C2E81256E45B6AC0CA080 /* libRNSnackbar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,6 +779,7 @@
 				72A87C7DE9834B988333724F /* RNSVG.xcodeproj */,
 				AB67E585DD0A4D7FBA1AA944 /* FastImage.xcodeproj */,
 				F8704099F6EF4581924D2DF3 /* RNBlur.xcodeproj */,
+				5795F93D17CA4649B6AE1ABF /* RNSnackbar.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1471,12 +1476,14 @@
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 				);
 				INFOPLIST_FILE = MoviesRevampedTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1508,12 +1515,14 @@
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 				);
 				INFOPLIST_FILE = MoviesRevampedTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
@@ -1548,6 +1557,7 @@
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 				);
 				INFOPLIST_FILE = MoviesRevamped/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1583,6 +1593,7 @@
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-snackbar/ios",
 				);
 				INFOPLIST_FILE = MoviesRevamped/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

@@ -1,4 +1,5 @@
 import MovieDetail from '@components/Movies/MovieDetail';
+import { accountActions } from '@store/Account/accountActions';
 import { connect } from 'react-redux';
 import { AppState } from '@store/configureStore';
 import { StackScreenProps } from '@utils/types';
@@ -14,7 +15,10 @@ const mapStateToProps = (state: AppState, ownProps: StackScreenProps<{ id: numbe
 
 const mapDispatchToProps = {
   fetchMovieById: moviesActions.fetchMovie,
-  fetchMovieAccountStates: moviesActions.fetchMovieAccountStates
+  fetchMovieAccountStates: moviesActions.fetchMovieAccountStates,
+  toggleFavorite: accountActions.toggleFavorite,
+  toggleWatchlist: accountActions.toggleWatchlist,
+  rateMovie: moviesActions.rateMovie
 };
 
 export type MovieDetailModalScreenProps = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;

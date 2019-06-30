@@ -1,4 +1,4 @@
-import { MovieEndpointsPath, Movie, MovieDetail, AccountState } from './Models';
+import { MovieEndpointsPath, Movie, MovieDetail, AccountState, AccountActionResponse } from './Models';
 import { getUrl, client } from './Axios';
 
 export const getMovies = async (path: MovieEndpointsPath, page: number = 1) => {
@@ -20,5 +20,11 @@ export const getMovieById = async (id: number) => {
 export const getMovieAccountState = async (id: number, sessionId: string) => {
   const url = getUrl(`movie/${ id }/account_states`, `session_id=${ sessionId }`);
   const response = await client.get<AccountState>(url);
+  return response.data;
+};
+
+export const rateMovie = async (id: number, rating: number, sessionId: string) => {
+  const url = getUrl(`movie/${ id }/rating`, `session_id=${ sessionId }`);
+  const response = await client.post<AccountActionResponse>(url, { value: rating });
   return response.data;
 };

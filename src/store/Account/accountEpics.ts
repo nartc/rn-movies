@@ -1,11 +1,13 @@
-import { getAccountDetail, getAccountMedias } from '@api/Account';
+import { addToWatchList, getAccountDetail, getAccountMedias, markFavorite } from '@api/Account';
 import { Session, Movie, Account, TvShow } from '@api/Models';
 import { accountActions } from '@store/Account/accountActions';
 import { AccountActions } from '@store/Account/accountReducer';
 import { ConfigurationState } from '@store/Configurations/configurationReducer';
 import { AppState } from '@store/configureStore';
+import { moviesActions } from '@store/Movies/moviesActions';
+import { showsActions } from '@store/Shows/showsActions';
 import { ActionsObservable, StateObservable } from 'redux-observable';
-import { forkJoin } from 'rxjs';
+import { forkJoin, iif } from 'rxjs';
 import { catchError, filter, map, pluck, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 import { from } from 'rxjs/internal/observable/from';
@@ -234,11 +236,57 @@ const getAverageShowsRatingEpic = (
   );
 };
 
+const toggleWatchlistEpic = (
+  action$: ActionsObservable<AccountActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
+  filter(isActionOf(accountActions.toggleWatchlist)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    const { media_id, media_type } = action.payload;
+    const accountId = (state.accountState.account as Account).id;
+    const sessionId = (state.authState.session as Session).session_id;
+    return from(addToWatchList(accountId, sessionId, action.payload)).pipe(
+      map(() => {
+        if (media_type === 'movie') {
+          return moviesActions.fetchMovieAccountStates(media_id);
+        }
+
+        return showsActions.fetchShowAccountStates(media_id);
+      })
+    );
+  })
+);
+
+const toggleFavoriteEpic = (
+  action$: ActionsObservable<AccountActions>,
+  state$: StateObservable<AppState>
+) => action$.pipe(
+  filter(isActionOf(accountActions.toggleFavorite)),
+  withLatestFrom(state$),
+  switchMap(([action, state]) => {
+    const { media_id, media_type } = action.payload;
+    const accountId = (state.accountState.account as Account).id;
+    const sessionId = (state.authState.session as Session).session_id;
+    return from(markFavorite(accountId, sessionId, action.payload)).pipe(
+      map(() => {
+        if (media_type === 'movie') {
+          return moviesActions.fetchMovieAccountStates(media_id);
+        }
+
+        return showsActions.fetchShowAccountStates(media_id);
+      })
+    );
+  })
+);
+
 export const accountEpics = [
   getAccountDetailEpic,
   getAccountMoviesEpic,
   getAccountShowsEpic,
   getAverageMoviesRatingEpic,
   getAverageShowsRatingEpic,
-  getAccountMediaCount
+  getAccountMediaCount,
+  toggleFavoriteEpic,
+  toggleWatchlistEpic
 ];

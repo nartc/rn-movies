@@ -5,6 +5,8 @@ export type ShowEndpointsPath =
   | 'airing_today';
 export type AccountMediaType = 'favorite' | 'watchlist' | 'rated';
 
+export type AccountActionResponse = { status_code: number; status_message: string };
+
 export enum VideoType {
   Trailer = 'Trailer',
   Clip = 'Clip',
@@ -310,10 +312,10 @@ export class WatchlistParams {
   media_id: number;
   watchlist: boolean;
 
-  constructor(media_type: 'movie' | 'tv', media_id: number) {
+  constructor(media_type: 'movie' | 'tv', media_id: number, watchlist: boolean = true) {
     this.media_id = media_id;
     this.media_type = media_type;
-    this.watchlist = true;
+    this.watchlist = watchlist;
   }
 }
 
