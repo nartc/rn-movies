@@ -57,6 +57,12 @@ const MovieDetail: StackScreenComponent<MovieDetailModalScreenProps> = (
     }
   }, [accountState]);
 
+  useEffect(() => {
+    if (!blurViewRef && viewRef.current) {
+      setBlurViewRef(findNodeHandle(viewRef.current));
+    }
+  }, [isLoading]);
+
   const onRecommendationPress = useCallback((movie: Movie) => {
     loadingMovieIdRef.current = movie.id;
     navigation.replace('MovieDetails', { id: movie.id });
