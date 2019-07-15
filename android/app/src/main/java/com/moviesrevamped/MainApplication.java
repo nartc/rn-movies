@@ -1,25 +1,15 @@
 package com.moviesrevamped;
 
+
 import android.app.Application;
-
-import com.facebook.react.ReactApplication;
-import com.azendoo.reactnativesnackbar.SnackbarPackage;
-import com.cmcewen.blurview.BlurViewPackage;
-import com.dylanvann.fastimage.FastImageViewPackage;
-import com.horcrux.svg.SvgPackage;
-import com.reactnativecommunity.webview.RNCWebViewPackage;
-import com.react.rnspinkit.RNSpinkitPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.swmansion.rnscreens.RNScreensPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import android.util.Log;
+import com.facebook.react.PackageList;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.ReactNativeHost;
+import com.facebook.react.bridge.JavaScriptExecutorFactory;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -32,20 +22,8 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new SnackbarPackage(),
-            new BlurViewPackage(),
-            new FastImageViewPackage(),
-            new SvgPackage(),
-            new RNCWebViewPackage(),
-            new RNSpinkitPackage(),
-            new LinearGradientPackage(),
-            new AsyncStoragePackage(),
-            new VectorIconsPackage(),
-            new RNScreensPackage(),
-            new RNGestureHandlerPackage()
-      );
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      return packages;
     }
 
     @Override
