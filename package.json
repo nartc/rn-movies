@@ -3,8 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"start": "REACT_DEBUGGER=\"open -g 'rndebugger://set-debugger-loc?port=8081' ||\" node node_modules/react-native/local-cli/cli.js start",
-		"start:only": "node node_modules/react-native/local-cli/cli.js start",
+		"start": "REACT_DEBUGGER=\"open -g 'rndebugger://set-debugger-loc?port=8081' ||\" react-native start",
+		"start:only": "react-native start",
 		"devtools": "react-devtools",
 		"test": "jest"
 	},
